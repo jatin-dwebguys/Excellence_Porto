@@ -1,17 +1,4 @@
-<?php
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
 
-// @codingStandardsIgnoreFile
-
-?>
-<?php
-/**
- * @var $block \Magento\Reports\Block\Product\Viewed
- */
-?>
 <?php
 if ($exist = ($block->getRecentlyViewedProducts() && $block->getRecentlyViewedProducts()->getSize())) {
     $type = 'widget-viewed';

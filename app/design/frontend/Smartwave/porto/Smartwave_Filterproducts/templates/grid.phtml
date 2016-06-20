@@ -39,12 +39,10 @@ $move_actions = $this->getData("move_actions");
 if($move_actions == null) {
     $move_actions = $_category_grid_config['move_actions'];
 }
- $column_count = $this->getData("column_count");
-
+$column_count = $this->getData("column_count");
 if($column_count == null) {
     $column_count = 4;
 }
-
 ?>
 <?php if (!$_productCollection->count()): ?>
     <div class="message info empty"><div><?php echo __('We can\'t find products matching the selection.') ?></div></div>

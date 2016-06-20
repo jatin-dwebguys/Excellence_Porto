@@ -100,6 +100,12 @@ class LatestList extends \Magento\Catalog\Block\Product\ListProduct {
         if(!$category_id) {
             $category_id = $this->_storeManager->getStore()->getRootCategoryId();
         }
+        //chnages
+         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+   $category = $objectManager->get('Magento\Framework\Registry')->registry('current_category');//get current category
+   if(!empty($category))
+   $category_id=$category->getId();
+
         $category = $this->categoryRepository->get($category_id);
         if(isset($category) && $category) {
             $collection = $this->_collection
