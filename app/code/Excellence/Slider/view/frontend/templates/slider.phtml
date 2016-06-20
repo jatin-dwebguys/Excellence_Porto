@@ -1,0 +1,116 @@
+<?php
+	$rowData = $block->getSlidesModel(); 
+	$sliderType = $block->getSliderType();
+?>
+
+<?php
+if(!empty($rowData))
+{
+	?>
+	<style type="text/css">.authentication-wrapper{ margin-top: 0px; }</style>
+	<?php
+	switch ($sliderType) {
+        case 'bxslider':
+        	?>
+        		<script type="text/javascript">
+					requirejs(['jquery','bxslider'],function($,bx){
+						$('.bxslider').bxSlider({
+							captions: true,
+            				auto: true,
+            				adaptiveHeight: true,
+            				pagerCustom: '#bx-pager'
+						});
+				    });
+				</script>
+	            <div>
+					<ul class="bxslider">
+						<?php foreach ($rowData as $item) : ?>
+							<li><a href="<?php echo $item['content']; ?>"><img src="<?php echo $item['filename']; ?>" alt="<?php echo $item['title']; ?>" title="<?php echo $item['title']; ?>" class= "slider-image" /></a></li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+            <?php
+            break;
+
+        case 'flexslider':
+            ?>
+            	<script type="text/javascript">
+					requirejs(['jquery','flexslider'],function($,flex){
+						$('.flexslider').flexslider();
+				    });
+				</script>
+	            <div class="flexslider">
+					<ul class="slides">
+						<?php foreach ($rowData as $item) : ?>
+							<li>
+								<a href="<?php echo $item['content']; ?>"><img src="<?php echo $item['filename']; ?>" alt="<?php echo $item['title']; ?>" title="<?php echo $item['title']; ?>" class= "slider-image" /></a>
+								<?php
+								if(!empty($item['title'])){
+									?>
+									<p class="image-caption"><?php echo $item['title']; ?></p>
+									<?php
+								}
+								?>
+								
+							</li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+            <?php
+            break;
+
+        case 'owlcarousel':
+            ?>
+            	<script type="text/javascript">
+					requirejs(['jquery','owlcarousel'],function($,owl){
+						$('.owl-carousel').owlCarousel({
+							items: 1,
+					        autoplay: true,
+					        dots: false,
+					        nav: true,
+					        navRewind: true,
+					        loop: true
+						});
+				    });
+				</script>
+	            <div class="owl-carousel">
+						<?php foreach ($rowData as $item) : ?>
+							<div><a href="<?php echo $item['content']; ?>"><img src="<?php echo $item['filename']; ?>" alt="<?php echo $item['title']; ?>" title="<?php echo $item['title']; ?>" class= "slider-image" /></a>
+							<?php
+							if(!empty($item['title'])){
+								?>
+								<p class="image-caption"><?php echo $item['title']; ?></p>
+								<?php
+							}
+							?>
+							</div>
+						<?php endforeach; ?>
+				</div>
+            <?php
+            break;
+
+        case 'unslider':
+            ?>
+            	<script type="text/javascript">
+					requirejs(['jquery','unslider'],function($,unslider){
+						$('.automatic-slider').unslider({
+							autoplay: true,
+							arrows: false 
+						});
+
+				    });
+				</script>
+	            <div class="automatic-slider">
+					<ul>
+						<?php foreach ($rowData as $item) : ?>
+							<li><a href="<?php echo $item['content']; ?>"><img src="<?php echo $item['filename']; ?>" alt="<?php echo $item['title']; ?>" title="<?php echo $item['title']; ?>" class= "slider-image" /></a></li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+            <?php
+            break;
+
+        default:
+    }
+}
+?>

@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 SW-THEMES. All rights reserved.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="page.top">
+             <block class="Magento\Catalog\Block\Category\View" name="category_banner" template="category/banner.phtml" ifconfig="porto_settings/category/category_description" after="-"/>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="Magento\Catalog\Block\Category\View" name="category_desc_main_column" template="category/desc_main_column.phtml" ifconfig="porto_settings/category/category_description" before="category.products"/>
+
+           <block class="Smartwave\Filterproducts\Block\Home\LatestList" name="latest_product" product_count="10" aspect_ratio="0" image_width="250" image_height="250" template="owl_list2.phtml" />  
+
+           <block  class="Smartwave\Filterproducts\Block\Home\FeaturedList" name="featured_product" product_count="3"  template="owl_list_featured.phtml" />
+     
+            
+        </referenceContainer>
+
+        <move element="category.image" destination="content" before="category_desc_main_column"/>
+      <!--   <move element="catalog.leftnav" destination="content" before="category_desc_main_column" /> -->
+        <referenceContainer name="sidebar.main">
+            
+          <referenceBlock name="category_view_custom_block" remove="true" /> 
+           
+        <!--  <referenceBlock name="catalog.leftnav" remove="true" />   -->
+
+            <block class="Smartwave\Porto\Block\Template" name="category_view_custom_block" after="-" template="Magento_Catalog::category/custom_block.phtml"/>
+        </referenceContainer>
+  
+
+    </body>
+</page>

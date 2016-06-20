@@ -22,10 +22,11 @@ atlassian*
 /lib/internal/flex/varien/.settings
 /node_modules
 /.grunt
-app/code/Mage/
-app/code/Excellence
-pub
-/var/*
+/app/code/Mage/
+/app/code/Excellence/Sidebar
+/app/code/Mage
+/pub
+/var
 !/var/.htaccess
 /vendor
 !/vendor/.htaccess

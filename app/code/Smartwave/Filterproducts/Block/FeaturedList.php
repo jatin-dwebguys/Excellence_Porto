@@ -177,8 +177,5 @@ class FeaturedList extends \Magento\Catalog\Block\Product\ListProduct {
     public function getPageTitle() {
         return $this->_config["title"];
     }
-   
-   public function test(){
-    return 'hiii';
-   }
+  
 }
