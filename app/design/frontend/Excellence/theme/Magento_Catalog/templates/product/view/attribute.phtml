@@ -1,0 +1,195 @@
+
+<?php
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+$_product = $block->getProduct();
+$_call = $block->getAtCall();
+$_code = $block->getAtCode();
+$_className = $block->getCssClass();
+$_attributeLabel = $block->getAtLabel();
+$_attributeType = $block->getAtType();
+$_attributeAddAttribute = $block->getAddAttribute();
+
+if ($_attributeLabel && $_attributeLabel == 'default') {
+    $_attributeLabel = $_product->getResource()->getAttribute($_code)->getFrontendLabel();
+}
+if ($_attributeType && $_attributeType == 'text') {
+    $_attributeValue = ($_helper->productAttribute($_product, $_product->$_call(), $_code)) ? $_product->getAttributeText($_code) : '';
+} else {
+    $_attributeValue = $_helper->productAttribute($_product, $_product->$_call(), $_code);
+}
+?>
+
+
+<?php if($_className != "description") : ?>
+
+  <?php if ($_attributeValue): ?>
+
+<div class="product attibute <?php /* @escapeNotVerified */ echo $_className?>">
+    <?php if ($_attributeLabel != 'none'): ?><strong class="type"><?php /* @escapeNotVerified */ echo $_attributeLabel?></strong><?php endif; ?>
+    <div class="value" <?php /* @escapeNotVerified */ echo $_attributeAddAttribute;?>><?php /* @escapeNotVerified */ echo $_attributeValue; ?></div>
+</div>
+<?php endif; ?>
+<?php else: ?>
+
+    <div class="product attibute <?php /* @escapeNotVerified */ echo $_className?>">
+    <?php if ($_attributeLabel != 'none'): ?><strong class="type"><?php /* @escapeNotVerified */ echo $_attributeLabel?></strong><?php endif; ?>
+    <div class="value" <?php /* @escapeNotVerified */ echo $_attributeAddAttribute;?>>
+    
+    <?php /* @escapeNotVerified */ //echo 'hii'; // echo $_attributeValue; ?>
+     
+ <!--general_details-->     
+ <?php $_attributeValue = $_helper->productAttribute($_product, $_product->getGeneralDetails(), "general_details");
+   if($_attributeValue):
+  ?>
+ 
+<h4 id="togglediv" data-toggle="collapse" data-target="#collapsedetail">
+     <em class="glyphicon glyphicon-minus"></em>
+      <strong><?php  echo  $_attributeLabel = $_product->getResource()->getAttribute("general_details")->getFrontendLabel(); ?>
+       </strong>
+</h4>
+<div id="collapsedetail" class="row collapse in detail-content">
+    <div class="col-md-8 col-sm-8 col-xs-8 col-lg-8">
+       <?php  echo $_attributeValue = $_helper->productAttribute($_product, $_product->getGeneralDetails(), "general_details"); ?>
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+     <?php  $_attributeValue = $_helper->productAttribute($_product, $_product->getGeneralDetailsImage(), "general_details_image");
+       if($_attributeValue):
+      ?>
+      <div class="img-reponsive detail-img">
+           <?php echo $_attributeValue; ?>
+      </div>
+      <?php endif; ?>
+    </div>
+</div>
+
+<?php endif; ?>
+
+<!--technical_specifications-->
+<h4 id="togglediv" data-toggle="collapse" data-target="#collapstechnical">
+        <em class="glyphicon glyphicon-minus"></em>
+        <strong><?php  echo  $_attributeLabel = $_product->getResource()->getAttribute("technical_specifications")->getFrontendLabel(); ?></strong>
+</h4>
+<div id="collapstechnical" class="row collapse in detail-content" >
+    <div class="col-md-8 col-sm-8 col-xs-8 col-lg-8">
+              <?php  echo $_attributeValue = $_helper->productAttribute($_product, $_product->getTechnicalSpecifications(), "technical_specifications"); ?>
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+    
+       <?php  $_attributeValue = $_helper->productAttribute($_product, $_product->getTechnicalSpecificationsImage(), "technical_specifications_image");
+       if($_attributeValue):
+      ?>
+      <div class="img-reponsive detail-img">
+           <?php echo $_attributeValue; ?>
+      </div>
+      <?php endif; ?>
+      
+    </div>
+</div>
+
+<!--description_overview description_features-->
+<h4 id="togglediv" data-toggle="collapse" data-target="#collapsdescription">
+    <em class="glyphicon glyphicon-minus"></em>
+    <strong> Description</strong>
+</h4>
+<div id="collapsdescription" class="row collapse in detail-content" >
+    <h4><?php  echo  $_attributeLabel = $_product->getResource()->getAttribute("description_overview")->getFrontendLabel(); ?></h4>
+    <div class="col-md-8 col-sm-8 col-xs-8 col-lg-8">
+      <?php  echo $_attributeValue = $_helper->productAttribute($_product, $_product->getDescriptionOverview(), "description_overview"); ?>
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+         <?php  $_attributeValue = $_helper->productAttribute($_product, $_product->getDescriptionOverviewImage(), "description_overview_image");
+       if($_attributeValue):
+      ?>
+      <div class="img-reponsive detail-img">
+           <?php echo $_attributeValue; ?>
+      </div>
+      <?php endif; ?>
+    </div>
+    <br />
+    <h4><?php  echo  $_attributeLabel = $_product->getResource()->getAttribute("description_features")->getFrontendLabel(); ?></h4>
+    <div class="col-md-8 col-sm-8 col-xs-8 col-lg-8">
+      <?php  echo $_attributeValue = $_helper->productAttribute($_product, $_product->getDescriptionFeatures(), "description_features"); ?>
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+       <?php  $_attributeValue = $_helper->productAttribute($_product, $_product->getDescriptionFeaturesImage(), "description_features_image");
+       if($_attributeValue):
+      ?>
+      <div class="img-reponsive detail-img">
+           <?php echo $_attributeValue; ?>
+      </div>
+      <?php endif; ?>
+    
+    </div>
+</div>
+
+
+<!-- warranty-->
+<h4 id="togglediv" data-toggle="collapse" data-target="#collapsewarranty">
+    <em class="glyphicon glyphicon-minus"></em>
+     <strong><?php  echo  $_attributeLabel = $_product->getResource()->getAttribute("warranty")->getFrontendLabel(); ?></strong>
+</h4>
+<div id="collapsewarranty" class="row collapse in detail-content" >
+    <div class="col-md-8 col-sm-8 col-xs-8 col-lg-8">
+            <?php  echo $_attributeValue = $_helper->productAttribute($_product, $_product->getWarranty(), "warranty"); ?>
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+         <?php  $_attributeValue = $_helper->productAttribute($_product, $_product->getWarrantyImage(), "warranty_image");
+       if($_attributeValue):
+      ?>
+      <div class="img-reponsive detail-img">
+           <?php echo $_attributeValue; ?>
+      </div>
+      <?php endif; ?>
+    </div>
+</div>
+
+<!-- term_conditions--> 
+<h4 id="togglediv" data-toggle="collapse" data-target="#collapseterm">
+    <em class="glyphicon glyphicon-minus"></em> 
+    <strong><?php  echo  $_attributeLabel = $_product->getResource()->getAttribute("term_conditions")->getFrontendLabel(); ?></strong>
+</h4>
+<div id="collapseterm" class="row collapse in detail-content" >
+    <div class="col-md-8 col-sm-8 col-xs-8 col-lg-8">
+            <?php  echo $_attributeValue = $_helper->productAttribute($_product, $_product->getTermConditions(), "term_conditions"); ?>
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+         <?php  $_attributeValue = $_helper->productAttribute($_product, $_product->getTermConditionsImage(), "term_conditions");
+       if($_attributeValue):
+      ?>
+      <div class="img-reponsive detail-img">
+           <?php echo $_attributeValue; ?>
+      </div>
+      <?php endif; ?>
+    </div>
+</div>
+    
+    
+    </div>
+</div>
+
+<?php endif; ?>
+
+
+
+<style>
+.detail-img {
+  width: 200px; height: 169px; float: right;
+}
+
+.detail-content {
+ border-radius: 5px; border: 1px solid #eee; padding: 15px 10px; margin: 0px;
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+

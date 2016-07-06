@@ -1,0 +1,85 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php if ($detailedInfoGroup = $block->getGroupChildNames('detailed_info', 'getChildHtml')):?>
+    <div class="product info detailed">
+        <?php $layout = $block->getLayout(); ?>
+        <div class="product data items" data-mage-init='{"tabs":{"openedState":"active"}}'>
+            <?php foreach ($detailedInfoGroup as $name):?>
+                <?php
+                    $html = $layout->renderElement($name);
+                    if (!trim($html)) {
+                        continue;
+                    }
+
+                    $alias = $layout->getElementAlias($name);
+                    $label = $block->getChildData($alias, 'title');
+                ?>
+                <?php if($alias!='reviews'): ?>
+
+                <div class="data item title  active " style="float:left"
+                     aria-labeledby="tab-label-<?php /* @escapeNotVerified */ echo $alias;?>-title"
+                     id="tab-label-<?php /* @escapeNotVerified */ echo $alias;?>">
+                  <!--  <h4><strong> <a class="data switch"
+                        tabindex="-1"
+                        style="color:#000;"
+                      
+                       id="tab-label-<?php echo $alias;?>-title">
+                        <?php /* @escapeNotVerified */ echo $label; ?>
+                    </a></strong></h4> -->
+                    <a class="data switch"
+                       tabindex="-1"
+                       data-toggle="switch"
+                       href="#<?php /* @escapeNotVerified */ echo $alias; ?>"
+                       id="tab-label-<?php /* @escapeNotVerified */ echo $alias;?>-title">
+                        <?php /* @escapeNotVerified */ echo $label; ?>
+                    </a>
+                </div>
+                <div class=" row " style="    margin: 0 0 20px 0;">
+                <div class="data item content"  data-role="content" style="float:left;    padding: 15px;
+    border: 1px solid #eee; margin:0;    width: 100%;">
+                    <?php /* @escapeNotVerified */ echo $html; ?>
+                </div>
+                 <div style="clear:both" ></div>
+                <?php   else:  ?>
+                    <div class="data item "
+                     aria-labeledby="tab-label-<?php /* @escapeNotVerified */ echo $alias;?>-title"
+                     id="tab-label-<?php /* @escapeNotVerified */ echo $alias;?>">
+                   <h3><strong> <a class="data switch"
+                        tabindex="-1"
+                        style="color:#000;"
+                      
+                       id="tab-label-<?php echo $alias;?>-title">
+                      <!--   <?php /* @escapeNotVerified */// echo $label; ?> -->
+                    </a></strong></h3>
+                </div>
+                <div class="row" style="    margin: 0 0 20px 0;">
+                <div class="data item "  data-role="content">
+                    <?php /* @escapeNotVerified */ echo $html; ?>
+                </div>
+                <?php  endif;   ?>
+               </div>
+            <?php endforeach;?>
+        </div>
+    </div>
+<?php endif; ?>
+<script type="text/javascript">
+        require([
+            'jquery'
+        ], function (jQuery) {
+         jQuery('body').on('click','#togglediv', function(){
+ jQuery(this).find('em').toggleClass('glyphicon-plus glyphicon-minus');})      
+        });
+    </script>
+
+    <style>
+    #togglediv {
+     font-size: 1.3rem;
+    }
+    </style>
