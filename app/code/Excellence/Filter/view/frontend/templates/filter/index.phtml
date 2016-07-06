@@ -1,0 +1,244 @@
+
+<?php 
+//print_r($block->getFilters()->getData());
+
+ $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $eavConfig = $objectManager->create('Magento\Eav\Model\Config');
+
+    $urlInterface=$objectManager->get('Magento\Framework\UrlInterface');
+
+   $this->_storeManager=  $objectManager->create('Magento\Store\Model\StoreManagerInterface');
+ $mediaUrl = $this->_storeManager->getStore()
+                    ->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+//echo $mediaUrl;
+
+?>
+
+<div class="filterMain">
+	<form class="search_form" action="<?php echo $urlInterface->getUrl('filter/filter/index');?>" method="post" enctype="multipart/form-data" autocomplete="off" >
+
+
+  <?php 
+     $first=1;
+     foreach ($block->getFilters() as $filter): ?>
+        <label for="selwhere"><?php echo $filter->getFrontendLabel(); ?></label>      
+       <select name="<?php echo $filter->getAttributeCode();?>" class="customFilters" id="<?php echo $filter->getAttributeCode(); ?>">
+           <?php 
+    	     $attribute = $eavConfig->getAttribute($filter->getEntityTypeId(), $filter->getAttributeCode());
+           $options = $attribute->getSource()->getAllOptions();
+           ?>
+           <option selected="true" disabled="disabled">  ----  Select ----
+           </option>
+
+      <?php   if($first==1){
+         for($i=1; $i<sizeof($options); $i++){?>
+             <option value="<?php echo $options[$i]['value'];?>"><?php  echo $options[$i]['label'];?></option> 
+       <?php } 
+          }
+
+          $first++;
+       ?>
+
+       </select>       
+      
+<?php endforeach; ?>
+ <button type="submit"  > Search </button>    
+     </form>
+</div>
+<div style="clear:both"></div>
+<style>
+
+label{
+      font-size: 15px;
+    margin-top: -22px;
+    float: left;
+    vertical-align: top;
+  }
+.filterMain {
+       margin-top: 25px;
+    margin-bottom: 30px;
+    float: right;
+    width: 75%;
+
+}
+   .customFilters {
+    
+    width: 16%;
+    background-repeat: no-repeat;
+    float: left;
+    margin-right: 10px;
+
+   }
+
+   .loaderclass {
+   background-image: url('<?php echo $block->getViewFileUrl('images/loader-1.gif'); ?>');
+   
+    background-position: center;
+    background-size: 30px 30px;
+
+   }
+
+
+</style>
+
+ <script type="text/javascript">
+        require([
+            'jquery'
+       ], function ($) {
+        //for  year filter 
+           $('#attribute_year').change(function(){
+           	var attribute_code=$(this).attr('id');
+          	var attribute_code_value=$(this).val();
+            var obj=$(this);
+
+            $('#filter_make').attr('disabled','disabled');
+            $('#filter_make').addClass("loaderclass");
+
+
+            $.ajax({
+              url: "<?php echo $urlInterface->getUrl('filter/filter/ajax'); ?>",
+              data: { code: attribute_code , value:attribute_code_value },
+              type: "POST",
+              dataType : "json",
+              success:function( data ) {
+            
+               if(data.length == 0){
+                 obj.nextAll().find('option:gt(0)').remove().end();
+                } else {
+                   $.each(data, function(key, obj){
+                    
+                     $('#'+key+' option:gt(0)').remove().end();
+                    $.each(obj,function(k,value){
+                     $('#'+key).append('<option value='+k+'>'+value+'</option>');
+                   });
+
+                     });
+               }
+
+               $('#filter_make').removeClass('loaderclass');
+                $('#filter_make').attr('disabled',false);
+            }
+            });
+        });
+    // for make filter
+        $('#filter_make').change(function(){
+            var attribute_code=$(this).attr('id');
+            var attribute_code_value=$(this).val();
+            var attribute_code_year_id = $('#attribute_year').attr('id');
+            var attribute_code_year_value=$('#attribute_year').val();
+            var obj=$(this);
+
+           $('#filter_model').attr('disabled','disabled');
+            $('#filter_model').addClass("loaderclass");
+
+            $.ajax({
+              url: "<?php echo $urlInterface->getUrl('filter/filter/ajax'); ?>",
+              data: { code: attribute_code , value:attribute_code_value , attribute_code_year_id:attribute_code_year_id , attribute_code_year_value:attribute_code_year_value },
+              type: "POST",
+              dataType : "json",
+              success:function( data ) {
+            
+               if(data.length == 0){
+                 obj.nextAll().find('option:gt(0)').remove().end();
+                } else {
+                   $.each(data, function(key, obj){
+                     $('#'+key+' option:gt(0)').remove().end();
+                    $.each(obj,function(k,value){
+                     $('#'+key).append('<option value='+k+'>'+value+'</option>');
+                   });
+
+                     });
+               }
+
+
+               $('#filter_model').removeClass('loaderclass');
+                $('#filter_model').attr('disabled',false);
+            }
+            });
+        });
+
+       
+
+        // for mode; filter
+        $('#filter_model').change(function(){
+            var attribute_code=$(this).attr('id');
+            var attribute_code_value=$(this).val();
+            var attribute_code_year_id = $('#attribute_year').attr('id');
+            var attribute_code_year_value=$('#attribute_year').val();
+            var attribute_code_make_id = $('#filter_make').attr('id');
+            var attribute_code_make_value=$('#filter_make').val();
+            var obj=$(this);
+
+             $('#filter_variant').attr('disabled','disabled');
+            $('#filter_variant').addClass("loaderclass");
+
+            $.ajax({
+              url: "<?php echo $urlInterface->getUrl('filter/filter/ajax'); ?>",
+              data: { code: attribute_code , value:attribute_code_value , attribute_code_year_id:attribute_code_year_id , attribute_code_year_value:attribute_code_year_value , attribute_code_make_id:attribute_code_make_id , attribute_code_make_value:attribute_code_make_value },
+              type: "POST",
+              dataType : "json",
+              success:function( data ) {
+            
+               if(data.length == 0){
+                 obj.nextAll().find('option:gt(0)').remove().end();
+                } else {
+                   $.each(data, function(key, obj){
+                     $('#'+key+' option:gt(0)').remove().end();
+                    $.each(obj,function(k,value){
+                     $('#'+key).append('<option value='+k+'>'+value+'</option>');
+                   });
+
+                     });
+               }
+
+               $('#filter_variant').removeClass('loaderclass');
+                $('#filter_variant').attr('disabled',false);
+            }
+            });
+        });
+
+       // for variant filter
+        $('#filter_variant').change(function(){
+            var attribute_code=$(this).attr('id');
+            var attribute_code_value=$(this).val();
+            var attribute_code_year_id = $('#attribute_year').attr('id');
+            var attribute_code_year_value=$('#attribute_year').val();
+            var attribute_code_make_id = $('#filter_make').attr('id');
+            var attribute_code_make_value=$('#filter_make').val();
+            var attribute_code_model_id = $('#filter_model').attr('id');
+            var attribute_code_model_value=$('#filter_model').val();
+            var obj=$(this);
+
+             $('#filter_engine').attr('disabled','disabled');
+            $('#filter_engine').addClass("loaderclass");
+
+            $.ajax({
+              url: "<?php echo $urlInterface->getUrl('filter/filter/ajax'); ?>",
+              data: { code: attribute_code , value:attribute_code_value , attribute_code_year_id:attribute_code_year_id , attribute_code_year_value:attribute_code_year_value , attribute_code_make_id:attribute_code_make_id , attribute_code_make_value:attribute_code_make_value ,attribute_code_model_id:attribute_code_model_id , attribute_code_model_value:attribute_code_model_value },
+              type: "POST",
+              dataType : "json",
+              success:function( data ) {
+            
+               if(data.length == 0){
+                 obj.nextAll().find('option:gt(0)').remove().end();
+                } else {
+                   $.each(data, function(key, obj){
+                     $('#'+key+' option:gt(0)').remove().end();
+                    $.each(obj,function(k,value){
+                     $('#'+key).append('<option value='+k+'>'+value+'</option>');
+                   });
+
+                     });
+               }
+
+                 $('#filter_engine').removeClass('loaderclass');
+                $('#filter_engine').attr('disabled',false);
+            }
+            });
+        });
+
+
+       }); 
+    </script>
+
+<!-- <option value="<?php //echo $urlInterface->getCurrentUrl().'?'.$options[$i]['label'].'='.$options[$i]['value'];?>"><?php  //echo $options[$i]['label'];?></option> -->

@@ -114,7 +114,7 @@ class View extends \Magento\Framework\App\Action\Action
      * @return \Magento\Catalog\Model\Category
      */
     protected function _initCategory()
-    {
+    { 
         $categoryId = (int)$this->getRequest()->getParam('id', false);
         if (!$categoryId) {
             return false;

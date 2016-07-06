@@ -130,7 +130,7 @@ class CreditmemoRepository implements \Magento\Sales\Api\CreditmemoRepositoryInt
      * @throws CouldNotSaveException
      */
     public function save(\Magento\Sales\Api\Data\CreditmemoInterface $entity)
-    {
+    { 
         try {
             $this->metadata->getMapper()->save($entity);
             $this->registry[$entity->getEntityId()] = $entity;

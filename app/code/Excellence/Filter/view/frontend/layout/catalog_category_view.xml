@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+     <body>		
+       <referenceContainer name="columns.top">		
+			<block class="Excellence\Filter\Block\Filter\Index" name="filter_index" template="filter/index.phtml">
+			</block>
+			
+            <!-- <block class="Excellence\Filter\Block\Product\ListProduct" name="filter_list" template="Excellence_Filter::product/list.phtml">
+			</block> -->
+        </referenceContainer>      
+    </body>
+</page>
