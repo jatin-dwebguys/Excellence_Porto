@@ -73,6 +73,7 @@ class CustomerSetup extends EavSetup
         $data = [];
         $entities = $this->getDefaultEntities();
         $attributes = $entities['customer']['attributes'];
+       
         foreach ($attributes as $attributeCode => $attribute) {
             $attributeId = $attributeIds[$customer][$attributeCode];
             $attribute['system'] = isset($attribute['system']) ? $attribute['system'] : true;

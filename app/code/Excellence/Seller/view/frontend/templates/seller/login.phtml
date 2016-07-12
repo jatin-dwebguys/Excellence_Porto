@@ -1,0 +1,76 @@
+
+
+<form class="form create account form-create-account" action="<?php /* @escapeNotVerified */ echo $block->getPostActionUrl() ?>" method="post" id="form-validate" enctype="multipart/form-data" autocomplete="off">
+    <fieldset class="fieldset create info">
+        <legend class="legend"><span><?php /* @escapeNotVerified */ echo __('Personal Information') ?></span></legend><br>
+        <input type="hidden" name="success_url" value="<?php /* @escapeNotVerified */ echo $block->getSuccessUrl() ?>">
+        <input type="hidden" name="error_url" value="<?php /* @escapeNotVerified */ echo $block->getErrorUrl() ?>">
+
+        <div class="field field-name-firstname required">
+            <label class="label" for="<?php /* @escapeNotVerified */ echo __('First Name') ?>">
+                <span><?php /* @escapeNotVerified */ echo __('First Name') ?></span>
+            </label>
+
+            <div class="control">
+                <input type="text" id="firstname"
+                       name="first_name"
+                       value=""
+                       title="<?php /* @escapeNotVerified */ echo __('First Name') ?>"
+                       class="input-text required-entry mage-error" data-validate="{required:true}"
+                        aria-invalid="true" aria-describedby="firstname-error"
+                       autocomplete="off" >
+            </div>
+        </div>
+
+
+        <div class="field field-name-lastname required">
+            <label class="label"  for="<?php /* @escapeNotVerified */ echo __('Last Name') ?>">
+                <span><?php /* @escapeNotVerified */ echo __('Last Name') ?></span>
+            </label>
+
+            <div class="control">
+                <input type="text" id="lastname"
+                       name="last_name"
+                       value=""
+                       title="<?php /* @escapeNotVerified */ echo __('Last Name') ?>"
+                       class="input-text required-entry mage-error " data-validate="{required:true}" >
+            </div>
+        </div>
+        <div class="field required">
+            <label for="email_address" class="label"><span><?php /* @escapeNotVerified */ echo __('Email') ?></span></label>
+            <div class="control">
+                <input type="email" name="email" id="email_address" value="<?php //echo $block->escapeHtml($block->getFormData()->getEmail()) ?>" title="<?php /* @escapeNotVerified */ echo __('Email') ?>" class="input-text" data-validate="{required:true, 'validate-email':true}">
+            </div>
+        </div>
+      
+
+       
+    </fieldset>
+    
+   
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit" class="action submit primary" title="<?php /* @escapeNotVerified */ echo __('Create an Account') ?>"><span><?php /* @escapeNotVerified */ echo __('Create an Account') ?></span></button>
+        </div>
+        
+    </div>
+</form>
+
+<style>
+.page-layout-2columns-left .column.main {
+	float:left;
+	width:100%;
+}
+</style>
+
+<script type="text/javascript">
+require([
+    'jquery',
+    'mage/mage'
+], function($){
+ 
+   var dataForm = $('#form-validate');
+   dataForm.mage('validation', {});
+ 
+});
+</script>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2015 Excellence. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Backend/etc/menu.xsd">
+    <menu>
+        <add id="Excellence_Seller::excellence_seller_index" title="Seller" module="Excellence_Seller"  sortOrder="20" dependsOnModule="Excellence_Seller" action="seller/seller/index" resource="Excellence_Seller::excellence_seller_index"/>
+<!--AddMenu-->
+    </menu>
+</config>
