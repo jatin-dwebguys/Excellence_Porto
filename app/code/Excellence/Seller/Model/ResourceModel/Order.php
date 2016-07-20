@@ -7,7 +7,7 @@ namespace Excellence\Seller\Model\ResourceModel;
 /**
  * Seller resource
  */
-class Seller extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
+class Order extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 {
     /**
      * Initialize resource
@@ -16,7 +16,7 @@ class Seller extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      */
     public function _construct()
     {
-        $this->_init('excellence_seller_detail', 'id');
+        $this->_init('sales_order_seller', 'id');
     }
 
   

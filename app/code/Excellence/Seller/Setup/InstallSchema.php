@@ -25,7 +25,7 @@ class InstallSchema implements InstallSchemaInterface
         $installer->startSetup();
 
 		/**
-         * Create table 'seller_seller'
+         * Create table 'excellence_seller_detail'
          */
         $table = $installer->getConnection()->newTable(
             $installer->getTable('excellence_seller_detail')
@@ -67,6 +67,39 @@ class InstallSchema implements InstallSchemaInterface
 		
 		$installer->getConnection()->createTable($table);
 		/*{{CedAddTable}}*/
+
+
+
+       /**
+         * Create table 'excellence_seller_detail'
+         */
+        $table = $installer->getConnection()->newTable(
+            $installer->getTable('sales_order_seller')
+        )
+        ->addColumn(
+            'id',
+            \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+            null,
+            ['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
+            'id'
+        )
+        ->addColumn(
+            'order_id',
+            \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+            '64k',
+            [],
+            'Order_id'
+        )
+        ->addColumn(
+            'seller_value',
+            \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+            '64k',
+            [],
+            'seller_value'
+        );
+        
+        $installer->getConnection()->createTable($table);
+
 
         $installer->endSetup();
 

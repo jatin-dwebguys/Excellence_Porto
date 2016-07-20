@@ -1,4 +1,4 @@
-<?php
+<?php  
 /**
  * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
@@ -48,7 +48,7 @@ class Collection extends AbstractCollection implements SearchResultInterface
         $model = 'Magento\Sales\Model\ResourceModel\Grid\Document',
         $connection = null,
         \Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
-    ) {
+    ) { 
         $this->_eventPrefix = $eventPrefix;
         $this->_eventObject = $eventObject;
         $this->_init($model, $resourceModel);

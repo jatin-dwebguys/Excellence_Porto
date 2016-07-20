@@ -1,5 +1,5 @@
 <?php
-namespace Excellence\Seller\Block\Adminhtml\Seller;
+namespace Excellence\Seller\Block\Adminhtml\Grid;
 
 
 class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
@@ -59,15 +59,19 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
         \Magento\Backend\Helper\Data $backendHelper,
         \Magento\Store\Model\WebsiteFactory $websiteFactory,
 		\Excellence\Seller\Model\ResourceModel\Seller\Collection $collectionFactory,
+        \Magento\Sales\Model\ResourceModel\Order\Collection $orderCollection,
         \Magento\Framework\Module\Manager $moduleManager,
          \Magento\Backend\Model\Auth\Session $authSession, 
+         \Excellence\Seller\Model\OrderFactory $sellerorderFactory,
         array $data = []
     ) {
 		
 		$this->_collectionFactory = $collectionFactory;
+        $this->orderCollection = $orderCollection;
         $this->_websiteFactory = $websiteFactory;
         $this->moduleManager = $moduleManager;
-          $this->authSession = $authSession;
+         $this->authSession = $authSession;
+         $this->sellerorderFactory = $sellerorderFactory;
         parent::__construct($context, $backendHelper, $data);
     }
 
@@ -99,15 +103,36 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
      * @return $this
      */
     protected function _prepareCollection()
-    {
+    {   
 		try{
 			
 			 $email=$this->authSession->getUser()->getEmail();
-             $collection=$this->_collectionFactory->addFieldToFilter('email',$email);
-			// $collection =$this->_collectionFactory->load();
+             $roleName = $this->authSession->getUser()->getRole()->getRoleName();
+              $sellerOrder=$this->sellerorderFactory->create(); 
+        
 
-		  
-
+             if($roleName=='Supplier'){
+               
+                 $sellerOrderIds=$sellerOrder->getCollection()->addFieldToFilter('seller_value',$email);
+             
+               $incrementIds= array();
+               foreach($sellerOrderIds as $sel){
+                $incrementIds[]=$sel->getOrderId();
+                }
+               $collection = $this->orderCollection->addAttributeToFilter('increment_id',array('in'=> $incrementIds));
+             } else {
+                   $sellerOrderIds=$sellerOrder->getCollection();
+             
+                 $incrementIds= array();
+                  foreach($sellerOrderIds as $sel){
+                $incrementIds[]=$sel->getOrderId();
+                }
+                  $collection = $this->orderCollection->addAttributeToFilter('increment_id',array('in'=> $incrementIds));
+             }
+     echo '<pre>';      
+     print_r($collection->getData());
+     die();
+         
 			$this->setCollection($collection);
 
 			parent::_prepareCollection();
@@ -148,39 +173,69 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
     protected function _prepareColumns()
     {
         $this->addColumn(
-            'id',
+            'increment_id',
             [
                 'header' => __('ID'),
-                'type' => 'number',
-                'index' => 'id',
+               'index' => 'increment_id',
                 'header_css_class' => 'col-id',
                 'column_css_class' => 'col-id'
             ]
         );
 		$this->addColumn(
-            'first_name',
+            'store_name',
             [
-                'header' => __('first_name'),
-                'index' => 'first_name',
-                'class' => 'first_name'
+                'header' => __('Purchase Point'),
+                'index' => 'store_name',
+                'class' => 'store_name'
             ]
         );
 		$this->addColumn(
-            'last_name',
+            'customer_firstname',
             [
-                'header' => __('last_name'),
-                'index' => 'last_name',
-                'class' => 'last_name'
+                'header' => __('Customer Name'),
+                'index' => 'customer_firstname',
+                'class' => 'customer_firstname'
             ]
         );
-		$this->addColumn(
-            'email',
+		
+         $this->addColumn(
+            'created_at',
             [
-                'header' => __('email'),
-                'index' => 'email',
-                'class' => 'email'
+                'header' => __('Purchase Date'),
+                'type' => 'date',
+                'index' => 'created_at',
+                'class' => 'created_at'
+            ]
+        );  
+
+         $this->addColumn(
+            'base_grand_total',
+            [
+                'header' => __('Grand Total (Base)'),
+                'index' => 'base_grand_total',
+                'class' => 'base_grand_total'
             ]
         );
+         
+
+         $this->addColumn(
+            'grand_total',
+            [
+                'header' => __('Grand Total (Purchased)'),
+                'index' => 'grand_total',
+                'class' => 'grand_total'
+            ]
+        );
+        
+         $this->addColumn(
+            'status',
+            [
+                'header' => __('Status'),
+                'index' => 'status',
+                'class' => 'status'
+            ]
+        );
+
 		/*{{CedAddGridColumn}}*/
 
         $block = $this->getLayout()->getBlock('grid.bottom.links');

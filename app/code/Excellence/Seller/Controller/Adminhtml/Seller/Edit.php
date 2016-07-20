@@ -36,4 +36,9 @@ class Edit extends \Magento\Backend\App\Action
         $this->_view->getLayout()->initMessages();
         $this->_view->renderLayout();
     }
+
+      protected function _isAllowed()
+    {
+        return $this->_authorization->isAllowed('Excellence_Seller::seller');
+    }
 }

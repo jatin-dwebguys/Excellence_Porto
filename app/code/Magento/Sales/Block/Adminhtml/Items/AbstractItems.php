@@ -1,4 +1,4 @@
-<?php
+<?php 
 /**
  * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
@@ -142,8 +142,7 @@ class AbstractItems extends \Magento\Backend\Block\Template
         } else {
             $type = $item->getProductType();
         }
-
-        return $this->getItemRenderer($type)->setItem($item)->setCanEditQty($this->canEditQty())->toHtml();
+      return $this->getItemRenderer($type)->setItem($item)->setCanEditQty($this->canEditQty())->toHtml();
     }
 
     /**

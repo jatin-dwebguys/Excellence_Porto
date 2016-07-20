@@ -6,7 +6,10 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Backend/etc/menu.xsd">
     <menu>
-        <add id="Excellence_Seller::excellence_seller_index" title="Seller" module="Excellence_Seller"  sortOrder="20" dependsOnModule="Excellence_Seller" action="seller/seller/index" resource="Excellence_Seller::excellence_seller_index"/>
+      <add id="Excellence_Seller::seller" title="Seller" module="Excellence_Seller"  sortOrder="20" dependsOnModule="Excellence_Seller" resource="Excellence_Seller::seller" />
+        <!--  <add id="Excellence_Seller::seller_menu" title="Seller" module="Excellence_Seller" sortOrder="20" parent="Excellence_Seller::seller"  dependsOnModule="Excellence_Seller" resource="Excellence_Seller::seller_menu" /> -->
+        <add id="Excellence_Seller::seller_account" title="Account"  module="Excellence_Seller" sortOrder="20" parent="Excellence_Seller::seller"  action="seller/seller/index" resource="Excellence_Seller::seller_account" />
+        <add id="Excellence_Seller::seller_grid" title="Orders" module="Excellence_Seller" parent="Excellence_Seller::seller" sortOrder="30"  action="seller/grid/index" resource="Excellence_Seller::seller_grid"/>
 <!--AddMenu-->
     </menu>
 </config>

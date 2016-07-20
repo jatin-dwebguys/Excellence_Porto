@@ -9,7 +9,8 @@ class Index extends \Magento\Framework\App\Action\Action
          \Magento\Framework\View\Result\PageFactory $resultPageFactory,
           \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate,
           \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder,
-            \Magento\Framework\ObjectManagerInterface $objectManager, 
+            \Magento\Framework\ObjectManagerInterface $objectManager,
+           
         \Psr\Log\LoggerInterface $logger )
     {    
        $this->_objectManager= $objectManager;
@@ -17,11 +18,14 @@ class Index extends \Magento\Framework\App\Action\Action
         $this->timezoneTime= $localeDate;
         $this->logger = $logger;
          $this->_transportBuilder = $transportBuilder;
+      
         return parent::__construct($context);
     }
      
     public function execute()
-    {   
+    {    
+     
+
         /* Here we prepare data for our email  */
  
  

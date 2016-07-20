@@ -3,7 +3,7 @@
 
     <body>
         <referenceContainer name="content">
-            <block class="Excellence\Seller\Block\Adminhtml\Seller" name="seller_seller_container"/>
+            <block class="Excellence\Seller\Block\Adminhtml\Grid" name="seller_grid_container"/>
         </referenceContainer>
     </body>
 </page>

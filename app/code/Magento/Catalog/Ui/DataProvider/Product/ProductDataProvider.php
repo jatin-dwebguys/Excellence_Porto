@@ -55,6 +55,7 @@ class ProductDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
         $this->collection = $collectionFactory->create();
         $this->addFieldStrategies = $addFieldStrategies;
         $this->addFilterStrategies = $addFilterStrategies;
+       
     }
 
     /**

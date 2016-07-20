@@ -59,7 +59,7 @@ $eavSetup->addAttribute(
 'backend' => '',
 'frontend' => '',
 'label' => 'Select Seller',
-'input' => 'select',
+'input' => 'multiselect',
 'class' => '',
 'source' => '',
 'global' => \Magento\Catalog\Model\ResourceModel\Eav\Attribute::SCOPE_GLOBAL,

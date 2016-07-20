@@ -10,7 +10,7 @@ use Magento\Framework\Exception\SellerException;
 /**
  * Sellertab seller model
  */
-class Seller extends \Magento\Framework\Model\AbstractModel
+class Order extends \Magento\Framework\Model\AbstractModel
 {
 
     /**
@@ -35,7 +35,7 @@ class Seller extends \Magento\Framework\Model\AbstractModel
      */
     public function _construct()
     {
-        $this->_init('Excellence\Seller\Model\ResourceModel\Seller');
+        $this->_init('Excellence\Seller\Model\ResourceModel\Order');
     }
 
    

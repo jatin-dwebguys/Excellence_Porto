@@ -108,7 +108,7 @@ abstract class Order extends \Magento\Backend\App\Action
         OrderManagementInterface $orderManagement,
         OrderRepositoryInterface $orderRepository,
         LoggerInterface $logger
-    ) {
+    ) { 
         $this->_coreRegistry = $coreRegistry;
         $this->_fileFactory = $fileFactory;
         $this->_translateInline = $translateInline;
