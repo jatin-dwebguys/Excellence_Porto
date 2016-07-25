@@ -10,6 +10,7 @@ class Index extends \Magento\Framework\App\Action\Action
           \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate,
           \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder,
             \Magento\Framework\ObjectManagerInterface $objectManager,
+             \Excellence\Seller\Model\OrderFactory $sellerorderFactory,
            
         \Psr\Log\LoggerInterface $logger )
     {    
@@ -18,13 +19,14 @@ class Index extends \Magento\Framework\App\Action\Action
         $this->timezoneTime= $localeDate;
         $this->logger = $logger;
          $this->_transportBuilder = $transportBuilder;
-      
+       $this->sellerorderFactory = $sellerorderFactory;
         return parent::__construct($context);
     }
      
     public function execute()
-    {    
-     
+    {  
+    
+    // die();
 
         /* Here we prepare data for our email  */
  

@@ -3,6 +3,9 @@
     <event name="sales_order_place_after">
         <observer name="excellence_trello_salesordersaveafter" instance="Excellence\Seller\Observer\SalesOrderPlaceAfter" />
     </event>
+    <event name="checkout_submit_all_after">
+        <observer name="excellence_seller_observersaveafter" instance="Excellence\Seller\Observer\CheckoutSubmitAllAfter" />
+    </event>
   
 </config>
 

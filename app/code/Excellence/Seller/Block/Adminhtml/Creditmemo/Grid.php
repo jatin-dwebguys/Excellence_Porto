@@ -1,5 +1,6 @@
 <?php
-namespace Excellence\Seller\Block\Adminhtml\Grid;
+
+namespace Excellence\Seller\Block\Adminhtml\Creditmemo;
 
 class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 {
@@ -57,8 +58,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Backend\Helper\Data $backendHelper,
         \Magento\Store\Model\WebsiteFactory $websiteFactory,
-		\Excellence\Seller\Model\ResourceModel\Seller\Collection $collectionFactory,
-        \Magento\Sales\Model\ResourceModel\Order\Collection $orderCollection,
+	//\Excellence\Seller\Model\ResourceModel\Seller\Collection $collectionFactory,
+        \Magento\Sales\Model\ResourceModel\Order\Creditmemo\Collection $invoiceCollection,
           \Magento\Sales\Model\OrderFactory $OrderFactory,
         \Magento\Framework\Module\Manager $moduleManager,
          \Magento\Backend\Model\Auth\Session $authSession, 
@@ -67,8 +68,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
         array $data = []
     ) {
 		
-		$this->_collectionFactory = $collectionFactory;
-        $this->orderCollection = $orderCollection;
+	//	$this->_collectionFactory = $collectionFactory;
+       $this->invoiceCollection = $invoiceCollection;
         $this->_websiteFactory = $websiteFactory;
         $this->moduleManager = $moduleManager;
          $this->authSession = $authSession;
@@ -110,38 +111,43 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
      */
     protected function _prepareCollection()
     {   
+    
+   // echo '<pre>';
+ 
+  //  print_r($this->invoiceCollection->getData());
+   
+  //die;
+   
+ 
      try{
-			
-			 $email=$this->authSession->getUser()->getEmail();
-             $roleName = $this->authSession->getUser()->getRole()->getRoleName();
+	      $email=$this->authSession->getUser()->getEmail();
+              $roleName = $this->authSession->getUser()->getRole()->getRoleName();
               $sellerOrder=$this->sellerorderFactory->create(); 
         
 
              if($roleName=='Supplier'){
-               
+             
                  $sellerOrderIds=$sellerOrder->getCollection()->addFieldToFilter('seller_value',$email);
              
-               $incrementIds= array();
+               $orderIds= array();
                foreach($sellerOrderIds as $sel){
-                $incrementIds[]=$sel->getIncrementId();
+                $orderIds[]=$sel->getOrderId();
                 }
-               $collection = $this->orderCollection->addAttributeToFilter('increment_id',array('in'=> $incrementIds));
-             } else {
-                   $sellerOrderIds=$sellerOrder->getCollection();
              
-                 $incrementIds= array();
-                  foreach($sellerOrderIds as $sel){
-                $incrementIds[]=$sel->getIncrementId();
-                }
-                  $collection = $this->orderCollection->addAttributeToFilter('increment_id',array('in'=> $incrementIds));
+              $collection = $this->invoiceCollection->addFieldToFilter('order_id',array('in'=> $orderIds));
+            
+             } else { 
+            //   $sellerOrderIds=$sellerOrder->getCollection();
+            //   $orderIds= array();
+            //  foreach($sellerOrderIds as $sel){
+            //    $orderIds[]=$sel->getOrderId();
+            //    }
+             
+          //   $collection = $this->invoiceCollection->addFieldToFilter('order_id',array('in'=> $orderIds));
+              $collection = $this->invoiceCollection;
              }
 
-            
-         
-       
-
-         
-			$this->setCollection($collection);
+          	$this->setCollection($collection);
 
 			parent::_prepareCollection();
 		  
@@ -179,51 +185,57 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function _prepareColumns()
-    {
+    {   
+
         $this->addColumn(
             'increment_id',
             [
-                'header' => __('ID'),
-               'index' => 'increment_id',
-                'header_css_class' => 'col-id',
-                'column_css_class' => 'col-id'
+                'header' => __('Credit Memo'),
+                'index' => 'increment_id',
+                'class' => 'increment_id'
             ]
         );
-		$this->addColumn(
-            'store_name',
-            [
-                'header' => __('Purchase Point'),
-                'index' => 'store_name',
-                'class' => 'store_name'
-            ]
-        );
-		$this->addColumn(
-            'customer_firstname',
-            [
-                'header' => __('Customer Name'),
-                'index' => 'customer_firstname',
-                'class' => 'customer_firstname'
-            ]
-        );
-		
+       
          $this->addColumn(
             'created_at',
             [
-                'header' => __('Purchase Date'),
+                'header' => __('Created'),
                 'type' => 'date',
                 'index' => 'created_at',
                 'class' => 'created_at'
             ]
         );  
 
-         $this->addColumn(
-            'base_grand_total',
+        $this->addColumn(
+            'entity_id',
             [
-                'header' => __('Grand Total (Base)'),
-                'index' => 'base_grand_total',
-                 'renderer' => 'Excellence\Seller\Block\Adminhtml\Grid\Basegrandtotal',
-                // 'filter' => true,
-                'class' => 'base_grand_total'
+                'header' => __('Order #'),
+               'index' => 'entity_id',
+               'renderer' => 'Excellence\Seller\Block\Adminhtml\Creditmemo\Orderincrementid',
+                'header_css_class' => 'col-id',
+                'column_css_class' => 'col-id'
+            ]
+        );
+		
+		$this->addColumn(
+            'billing_name',
+            [
+                'header' => __('Bill-to Name'),
+                'index' => 'entity_id',
+                'renderer' => 'Excellence\Seller\Block\Adminhtml\Creditmemo\Customername',
+                'filter' => false,
+                'class' => 'billing_name'
+            ]
+        );
+
+        $this->addColumn(
+            'order_date',
+            [
+                'header' => __('Order Date'),
+                'index' => 'entity_id',
+                 'renderer' => 'Excellence\Seller\Block\Adminhtml\Creditmemo\Orderdate',
+                 'filter' => false,
+                'class' => 'order_date'
             ]
         );
          
@@ -231,45 +243,26 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
          $this->addColumn(
             'grand_total',
             [
-                'header' => __('Grand Total (Purchased)'),
+                'header' => __('Refunded'),
                 'index' => 'grand_total',
-                 'renderer' => 'Excellence\Seller\Block\Adminhtml\Grid\Grandtotal',
-               // 'filter' => true,
+                 'renderer' => 'Excellence\Seller\Block\Adminhtml\Creditmemo\Refunded',
                 'class' => 'grand_total'
-            ]
-        );
-        
-         $this->addColumn(
-            'status',
-            [
-                'header' => __('Status'),
-                'index' => 'status',
-                'class' => 'status'
-            ]
-        );
-         
-         $this->addColumn(
-            'shipping_address',
-            [
-                'header' => __('Shipping Address'),
-                'index' => 'entity_id',
-                 'renderer' => 'Excellence\Seller\Block\Adminhtml\Grid\ShippingAddress',
-                 'filter' => false,
-                'class' => ''
             ]
         );
 
           $this->addColumn(
-            'billing_address',
+            'status',
             [
-                'header' => __('Billing Address'),
+                'header' => __('Status'),
                 'index' => 'entity_id',
-                 'renderer' => 'Excellence\Seller\Block\Adminhtml\Grid\BillingAddress',
+                 'renderer' => 'Excellence\Seller\Block\Adminhtml\Statuscreditmemo',
                  'filter' => false,
-                'class' => ''
+                'class' => 'status'
             ]
         );
-
+      
+         
+       
 		/*{{CedAddGridColumn}}*/
 
         $block = $this->getLayout()->getBlock('grid.bottom.links');

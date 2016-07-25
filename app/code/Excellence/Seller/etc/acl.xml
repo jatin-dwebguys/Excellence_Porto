@@ -10,6 +10,12 @@
                          </resource>
                          <resource id="Excellence_Seller::seller_grid" title="Orders" sortOrder="20">
                          </resource>
+                          <resource id="Excellence_Seller::seller_invoice" title="Invoice" sortOrder="20">
+                         </resource>
+                          <resource id="Excellence_Seller::seller_shipping" title="Shipping" sortOrder="20">
+                         </resource>
+                          <resource id="Excellence_Seller::seller_creditmemo" title="CreditMemo" sortOrder="20">
+                         </resource>
                  <!--    </resource> -->
                 </resource>     
  <!--AddMenuAcl-->

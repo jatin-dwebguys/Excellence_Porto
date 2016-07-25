@@ -85,6 +85,13 @@ class InstallSchema implements InstallSchemaInterface
         )
         ->addColumn(
             'order_id',
+            \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+            '64k',
+            [],
+            'Order_id'
+        )
+        ->addColumn(
+            'increment_id',
             \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
             '64k',
             [],

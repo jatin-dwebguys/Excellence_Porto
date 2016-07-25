@@ -65,8 +65,5 @@ class Save extends \Magento\Backend\App\Action
         $this->_redirect('*/*/');
     }
 
-      protected function _isAllowed()
-    {
-        return $this->_authorization->isAllowed('Excellence_Seller::seller');
-    }
+   
 }

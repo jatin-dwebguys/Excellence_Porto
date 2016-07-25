@@ -1,5 +1,6 @@
 <?php
-namespace Excellence\Seller\Block\Adminhtml\Grid;
+
+namespace Excellence\Seller\Block\Adminhtml\Shipping;
 
 class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 {
@@ -57,8 +58,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Backend\Helper\Data $backendHelper,
         \Magento\Store\Model\WebsiteFactory $websiteFactory,
-		\Excellence\Seller\Model\ResourceModel\Seller\Collection $collectionFactory,
-        \Magento\Sales\Model\ResourceModel\Order\Collection $orderCollection,
+	//\Excellence\Seller\Model\ResourceModel\Seller\Collection $collectionFactory,
+        \Magento\Sales\Model\ResourceModel\Order\Shipment\Collection $invoiceCollection,
           \Magento\Sales\Model\OrderFactory $OrderFactory,
         \Magento\Framework\Module\Manager $moduleManager,
          \Magento\Backend\Model\Auth\Session $authSession, 
@@ -67,8 +68,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
         array $data = []
     ) {
 		
-		$this->_collectionFactory = $collectionFactory;
-        $this->orderCollection = $orderCollection;
+	//	$this->_collectionFactory = $collectionFactory;
+       $this->invoiceCollection = $invoiceCollection;
         $this->_websiteFactory = $websiteFactory;
         $this->moduleManager = $moduleManager;
          $this->authSession = $authSession;
@@ -110,38 +111,43 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
      */
     protected function _prepareCollection()
     {   
+    
+    // echo '<pre>';
+ 
+   //  print_r($this->invoiceCollection->getData());
+   
+    // die;
+   
+ 
      try{
-			
-			 $email=$this->authSession->getUser()->getEmail();
-             $roleName = $this->authSession->getUser()->getRole()->getRoleName();
+	      $email=$this->authSession->getUser()->getEmail();
+              $roleName = $this->authSession->getUser()->getRole()->getRoleName();
               $sellerOrder=$this->sellerorderFactory->create(); 
         
 
              if($roleName=='Supplier'){
-               
+             
                  $sellerOrderIds=$sellerOrder->getCollection()->addFieldToFilter('seller_value',$email);
              
-               $incrementIds= array();
+               $orderIds= array();
                foreach($sellerOrderIds as $sel){
-                $incrementIds[]=$sel->getIncrementId();
+                $orderIds[]=$sel->getOrderId();
                 }
-               $collection = $this->orderCollection->addAttributeToFilter('increment_id',array('in'=> $incrementIds));
-             } else {
-                   $sellerOrderIds=$sellerOrder->getCollection();
              
-                 $incrementIds= array();
-                  foreach($sellerOrderIds as $sel){
-                $incrementIds[]=$sel->getIncrementId();
-                }
-                  $collection = $this->orderCollection->addAttributeToFilter('increment_id',array('in'=> $incrementIds));
+              $collection = $this->invoiceCollection->addFieldToFilter('order_id',$orderIds);
+            
+             } else {
+                 //  $sellerOrderIds=$sellerOrder->getCollection();
+             
+                // $incrementIds= array();
+                //  foreach($sellerOrderIds as $sel){
+              //  $incrementIds[]=$sel->getOrderId();
+               // }
+                //  $collection = $this->invoiceCollection->addAttributeToFilter('increment_id',array('in'=> $incrementIds));
+                 $collection = $this->invoiceCollection;
              }
 
-            
-         
-       
-
-         
-			$this->setCollection($collection);
+          	$this->setCollection($collection);
 
 			parent::_prepareCollection();
 		  
@@ -179,97 +185,79 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function _prepareColumns()
-    {
+    {   
+
         $this->addColumn(
             'increment_id',
             [
-                'header' => __('ID'),
-               'index' => 'increment_id',
-                'header_css_class' => 'col-id',
-                'column_css_class' => 'col-id'
+                'header' => __('Shipment'),
+                'index' => 'increment_id',
+                'class' => 'increment_id'
             ]
         );
-		$this->addColumn(
-            'store_name',
-            [
-                'header' => __('Purchase Point'),
-                'index' => 'store_name',
-                'class' => 'store_name'
-            ]
-        );
-		$this->addColumn(
-            'customer_firstname',
-            [
-                'header' => __('Customer Name'),
-                'index' => 'customer_firstname',
-                'class' => 'customer_firstname'
-            ]
-        );
-		
+       
          $this->addColumn(
             'created_at',
             [
-                'header' => __('Purchase Date'),
+                'header' => __('Ship Date'),
                 'type' => 'date',
                 'index' => 'created_at',
                 'class' => 'created_at'
             ]
         );  
 
-         $this->addColumn(
-            'base_grand_total',
+        $this->addColumn(
+            'entity_id',
             [
-                'header' => __('Grand Total (Base)'),
-                'index' => 'base_grand_total',
-                 'renderer' => 'Excellence\Seller\Block\Adminhtml\Grid\Basegrandtotal',
-                // 'filter' => true,
-                'class' => 'base_grand_total'
+                'header' => __('Order #'),
+               'index' => 'entity_id',
+               'renderer' => 'Excellence\Seller\Block\Adminhtml\Shipping\Orderincrementid',
+                'header_css_class' => 'col-id',
+                'column_css_class' => 'col-id'
             ]
         );
-         
+		
+		$this->addColumn(
+            'shipping_name',
+            [
+                'header' => __('Ship-to Name'),
+                'index' => 'entity_id',
+                'renderer' => 'Excellence\Seller\Block\Adminhtml\Shipping\Customername',
+                'filter' => false,
+                'class' => 'customer_name'
+            ]
+        );
+
+        $this->addColumn(
+            'order_date',
+            [
+                'header' => __('Order Date'),
+                'index' => 'entity_id',
+                 'renderer' => 'Excellence\Seller\Block\Adminhtml\Shipping\Orderdate',
+                 'filter' => false,
+                'class' => 'order_date'
+            ]
+        );
 
          $this->addColumn(
-            'grand_total',
+            'total_qty',
             [
-                'header' => __('Grand Total (Purchased)'),
-                'index' => 'grand_total',
-                 'renderer' => 'Excellence\Seller\Block\Adminhtml\Grid\Grandtotal',
-               // 'filter' => true,
-                'class' => 'grand_total'
+                'header' => __('Total Quantity'),
+                'index' => 'total_qty',
+                'class' => 'total_qty'
             ]
         );
         
-         $this->addColumn(
-            'status',
-            [
-                'header' => __('Status'),
-                'index' => 'status',
-                'class' => 'status'
-            ]
-        );
+        //  $this->addColumn(
+        //     'status',
+        //     [
+        //         'header' => __('Status'),
+        //         'index' => 'status',
+        //         'class' => 'status'
+        //     ]
+        // );
          
-         $this->addColumn(
-            'shipping_address',
-            [
-                'header' => __('Shipping Address'),
-                'index' => 'entity_id',
-                 'renderer' => 'Excellence\Seller\Block\Adminhtml\Grid\ShippingAddress',
-                 'filter' => false,
-                'class' => ''
-            ]
-        );
-
-          $this->addColumn(
-            'billing_address',
-            [
-                'header' => __('Billing Address'),
-                'index' => 'entity_id',
-                 'renderer' => 'Excellence\Seller\Block\Adminhtml\Grid\BillingAddress',
-                 'filter' => false,
-                'class' => ''
-            ]
-        );
-
+       
 		/*{{CedAddGridColumn}}*/
 
         $block = $this->getLayout()->getBlock('grid.bottom.links');

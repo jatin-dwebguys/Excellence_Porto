@@ -1,0 +1,53 @@
+
+<?php 
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$this->_storeManager =$objectManager->create('\Magento\Store\Model\StoreManagerInterface'); 
+$this->_localeCurrency = $objectManager->create("\Magento\Framework\Locale\CurrencyInterface");  
+
+     $productFactory=$objectManager->create("\Magento\Catalog\Model\ProductFactory")->create();
+  $currency_code = $this->_storeManager->getStore()->getCurrentCurrencyCode();
+$currency_symbol = $this->_localeCurrency->getCurrency($currency_code)->getSymbol();
+
+
+       
+$_order = $block->getOrder();
+
+ $seller_email=$block->getSellerEmail();
+
+ ?>
+<?php if ($_order): ?>
+    <?php $_items = $_order->getAllItems(); ?>
+    <table class="email-items">
+        <thead>
+            <tr>
+                <th class="item-info">
+                    <?= /* @escapeNotVerified */  __('Items'); ?>
+                </th>
+                <th class="item-qty">
+                    <?= /* @escapeNotVerified */  __('Qty'); ?>
+                </th>
+                <th class="item-price">
+                    <?= /* @escapeNotVerified */  __('Price'); ?>
+                </th>
+            </tr>
+        </thead>
+          
+          <?php  foreach($_items as $item) : ?>
+          <?php 
+           $product = $productFactory->load($item->getProductId());
+           $sellerAccount=$product->getAttributeText('seller_account');
+            if($sellerAccount == $seller_email):
+           ?>
+
+          <tr>
+                 <td  class="item-info"> <?php  echo  $item->getName(); ?> </td>
+                 <td class="item-qty"> <?php    echo  $item->getQtyOrdered(); ?></td>
+                 <td class="item-price"> <?php  echo  $currency_symbol . $item->getPrice(); ?> </td>
+         </tr>
+          <?php 
+            endif;
+           endforeach;  ?>
+
+    </table>
+   
+<?php endif; ?>

@@ -10,6 +10,9 @@
         <!--  <add id="Excellence_Seller::seller_menu" title="Seller" module="Excellence_Seller" sortOrder="20" parent="Excellence_Seller::seller"  dependsOnModule="Excellence_Seller" resource="Excellence_Seller::seller_menu" /> -->
         <add id="Excellence_Seller::seller_account" title="Account"  module="Excellence_Seller" sortOrder="20" parent="Excellence_Seller::seller"  action="seller/seller/index" resource="Excellence_Seller::seller_account" />
         <add id="Excellence_Seller::seller_grid" title="Orders" module="Excellence_Seller" parent="Excellence_Seller::seller" sortOrder="30"  action="seller/grid/index" resource="Excellence_Seller::seller_grid"/>
+        <add id="Excellence_Seller::seller_invoice" title="Invoice" module="Excellence_Seller" parent="Excellence_Seller::seller" sortOrder="30"  action="seller/invoice/index" resource="Excellence_Seller::seller_invoice"/>
+         <add id="Excellence_Seller::seller_shipping" title="Shipping" module="Excellence_Seller" parent="Excellence_Seller::seller" sortOrder="30"  action="seller/shipping/index" resource="Excellence_Seller::seller_shipping"/>
+          <add id="Excellence_Seller::seller_creditmemo" title="CreditMemo" module="Excellence_Seller" parent="Excellence_Seller::seller" sortOrder="30"  action="seller/creditmemo/index" resource="Excellence_Seller::seller_creditmemo"/>
 <!--AddMenu-->
     </menu>
 </config>
