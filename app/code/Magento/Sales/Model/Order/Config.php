@@ -72,7 +72,7 @@ class Config
      * @return \Magento\Sales\Model\ResourceModel\Order\Status\Collection
      */
     protected function _getCollection()
-    {
+    { 
         if ($this->collection == null) {
             $this->collection = $this->orderStatusCollectionFactory->create()->joinStates();
         }

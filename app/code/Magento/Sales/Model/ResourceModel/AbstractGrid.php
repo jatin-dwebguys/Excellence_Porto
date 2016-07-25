@@ -64,7 +64,7 @@ abstract class AbstractGrid extends AbstractDb implements GridInterface
      * @return string
      */
     public function getGridTable()
-    {
+    {     
         return $this->getTable($this->gridTableName);
     }
     /**

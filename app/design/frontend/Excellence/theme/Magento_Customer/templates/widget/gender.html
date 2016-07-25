@@ -1,0 +1,29 @@
+<div class="field gender<?php  echo ' required' ?>">
+    <label class="label" for="<?php /* @escapeNotVerified */ echo $block->getFieldId('gender')?>"><span><?php /* @escapeNotVerified */ echo __('Gender') ?></span></label>
+    <div class="control">
+      
+ <?php $options = $block->getGenderOptions(); ?>
+            <?php $value = $block->getGender();?>
+            <?php  array_shift($options); ?>
+            <?php foreach ($options as $option):?>
+               <!--  <option value="<?php /* @escapeNotVerified */ echo $option->getValue() ?>"<?php if ($option->getValue() == $value) echo ' selected="selected"' ?>><?php /* @escapeNotVerified */ echo __($option->getLabel()) ?></option> -->
+
+                   <input type="checkbox" class="gendercheck" id="<?php /* @escapeNotVerified */ echo $block->getFieldId('gender')?>" name="<?php /* @escapeNotVerified */ echo $block->getFieldName('gender')?>" title="<?php /* @escapeNotVerified */ echo __('Gender') ?>"  value="<?php /* @escapeNotVerified */ echo $option->getValue() ?>"<?php if ($option->getValue() == $value) echo ' checked' ?>>  <?php /* @escapeNotVerified */ echo __($option->getLabel()) ?>
+         
+            <?php endforeach;?>
+      
+    </div>
+</div>
+
+<script>
+require([
+    'jquery'
+], function(jQuery){
+   jQuery(".gendercheck").click(function() {
+  jQuery(".gendercheck").attr("checked", false); //uncheck all checkboxes
+  jQuery(this).attr("checked", true);  //check the clicked one
+});
+
+
+});
+</script>

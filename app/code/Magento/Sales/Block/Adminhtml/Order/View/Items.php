@@ -33,7 +33,7 @@ class Items extends \Magento\Sales\Block\Adminhtml\Items\AbstractItems
      * @return Collection
      */
     public function getItemsCollection()
-    {
+    {  
         return $this->getOrder()->getItemsCollection();
     }
 }
