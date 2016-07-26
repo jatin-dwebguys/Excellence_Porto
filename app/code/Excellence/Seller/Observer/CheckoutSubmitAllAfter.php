@@ -40,7 +40,7 @@ class CheckoutSubmitAllAfter implements ObserverInterface {
          
      }
       
-   //  $this->orderSender->send($observer->getEvent()->getOrder());
+ 
       
     }
 

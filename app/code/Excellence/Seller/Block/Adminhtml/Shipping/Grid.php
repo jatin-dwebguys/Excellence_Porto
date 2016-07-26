@@ -240,10 +240,11 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
         );
 
          $this->addColumn(
-            'total_qty',
+            'sku',
             [
-                'header' => __('Total Quantity'),
-                'index' => 'total_qty',
+                'header' => __('Items Sku'),
+                'index' => 'order_id',
+                 'renderer' => 'Excellence\Seller\Block\Adminhtml\Shipping\Sku',
                 'class' => 'total_qty'
             ]
         );

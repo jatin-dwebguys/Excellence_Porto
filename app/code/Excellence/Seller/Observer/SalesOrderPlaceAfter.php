@@ -3,7 +3,8 @@ namespace Excellence\Seller\Observer;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
  use Magento\Sales\Model\Order\Email\Sender\OrderSender;
-
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
 
 class SalesOrderPlaceAfter implements ObserverInterface
 {
@@ -14,6 +15,7 @@ class SalesOrderPlaceAfter implements ObserverInterface
       \Magento\Framework\ObjectManagerInterface $objectManager,
       \Magento\Sales\Model\OrderFactory $orderFactory,
      \Magento\Sales\Model\Order\Address\Renderer $addressRenderer,
+      ScopeConfigInterface $scopeConfig,
        OrderSender $orderSender 
      ) {
       $this->_productFactory = $productFactory;
@@ -22,6 +24,7 @@ class SalesOrderPlaceAfter implements ObserverInterface
         $this->_objectManager= $objectManager;
          $this->orderFactory = $orderFactory;
      $this->addressRenderer = $addressRenderer;
+        $this->scopeConfig = $scopeConfig;
     
      }
 
@@ -72,11 +75,13 @@ class SalesOrderPlaceAfter implements ObserverInterface
                     'name' => $sel,
                     'email' => $sel
                 ];
-                  
+                 $emailSalesRepre = $this->scopeConfig->getValue('trans_email/ident_sales/email',ScopeInterface::SCOPE_STORE);
+                $salesRepName = $this->scopeConfig->getValue('trans_email/ident_sales/name',ScopeInterface::SCOPE_STORE);  
+           
                 /* Sender Detail  */
                 $senderInfo = [
-                    'name' => 'Sender Name',
-                    'email' => 'sender@addess.com',
+                    'name' => $salesRepName,
+                    'email' => $emailSalesRepre,
                 ];
                  
                  

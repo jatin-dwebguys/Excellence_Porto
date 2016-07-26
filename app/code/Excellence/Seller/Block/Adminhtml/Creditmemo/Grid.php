@@ -241,14 +241,24 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
          
 
          $this->addColumn(
-            'grand_total',
+            'Sku',
             [
-                'header' => __('Refunded'),
-                'index' => 'grand_total',
-                 'renderer' => 'Excellence\Seller\Block\Adminhtml\Creditmemo\Refunded',
-                'class' => 'grand_total'
+                'header' => __('Items Sku'),
+                'index' => 'order_id',
+                 'renderer' => 'Excellence\Seller\Block\Adminhtml\Creditmemo\Sku',
+                'class' => 'Sku'
             ]
         );
+
+        //  $this->addColumn(
+        //     'grand_total',
+        //     [
+        //         'header' => __('Refunded'),
+        //         'index' => 'grand_total',
+        //          'renderer' => 'Excellence\Seller\Block\Adminhtml\Creditmemo\Refunded',
+        //         'class' => 'grand_total'
+        //     ]
+        // );
 
           $this->addColumn(
             'status',

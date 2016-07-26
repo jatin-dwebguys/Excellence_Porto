@@ -216,26 +216,26 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
             ]
         );  
 
-         $this->addColumn(
-            'base_grand_total',
-            [
-                'header' => __('Grand Total (Base)'),
-                'index' => 'base_grand_total',
-                 'renderer' => 'Excellence\Seller\Block\Adminhtml\Grid\Basegrandtotal',
-                // 'filter' => true,
-                'class' => 'base_grand_total'
-            ]
-        );
+        //  $this->addColumn(
+        //     'base_grand_total',
+        //     [
+        //         'header' => __('Grand Total (Base)'),
+        //         'index' => 'base_grand_total',
+        //          'renderer' => 'Excellence\Seller\Block\Adminhtml\Grid\Basegrandtotal',
+        //         // 'filter' => true,
+        //         'class' => 'base_grand_total'
+        //     ]
+        // );
          
 
          $this->addColumn(
-            'grand_total',
+            'sku',
             [
-                'header' => __('Grand Total (Purchased)'),
-                'index' => 'grand_total',
-                 'renderer' => 'Excellence\Seller\Block\Adminhtml\Grid\Grandtotal',
+                'header' => __('Items SKU'),
+                'index' => 'entity_id',
+                 'renderer' => 'Excellence\Seller\Block\Adminhtml\Grid\Sku',
                // 'filter' => true,
-                'class' => 'grand_total'
+                'class' => 'entity_id'
             ]
         );
         

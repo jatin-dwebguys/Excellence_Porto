@@ -152,6 +152,7 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 
              }
 
+
           	$this->setCollection($collection);
 
 			parent::_prepareCollection();
@@ -245,14 +246,23 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 		
         
          $this->addColumn(
-            'grand_total',
+            'sku',
             [
-                'header' => __('Amount'),
-                'index' => 'grand_total',
-                 'renderer' => 'Excellence\Seller\Block\Adminhtml\Invoice\Amount',
-                'class' => 'grand_total'
+                'header' => __('Items Sku'),
+                'index' => 'order_id',
+                 'renderer' => 'Excellence\Seller\Block\Adminhtml\Invoice\Sku',
+                'class' => 'sku'
             ]
         );
+        //  $this->addColumn(
+        //     'grand_total',
+        //     [
+        //         'header' => __('Amount'),
+        //         'index' => 'grand_total',
+        //          'renderer' => 'Excellence\Seller\Block\Adminhtml\Invoice\Amount',
+        //         'class' => 'grand_total'
+        //     ]
+        // );
 
            $this->addColumn(
             'status',
