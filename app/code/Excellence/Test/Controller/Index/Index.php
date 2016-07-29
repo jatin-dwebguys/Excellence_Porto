@@ -25,10 +25,10 @@ class Index extends \Magento\Framework\App\Action\Action
      
     public function execute()
     {  
-    
-    // die();
+      echo 'hi';
+      die();
 
-        /* Here we prepare data for our email  */
+   /* Here we prepare data for our email  */
  
  
 /* Receiver Detail  */

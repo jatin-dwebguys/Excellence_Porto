@@ -4,7 +4,7 @@
  * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Magento\Sales\Controller\Adminhtml\Order\Invoice;
+namespace Excellence\Seller\Controller\Adminhtml\Order\Invoice;
 
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Backend\App\Action;
@@ -72,13 +72,65 @@ class UpdateQty extends \Magento\Sales\Controller\Adminhtml\Invoice\AbstractInvo
      * @return \Magento\Framework\Controller\ResultInterface
      */
     public function execute()
-    { 
-        try {
-            $orderId = $this->getRequest()->getParam('order_id');
+    {   
+             $orderId = $this->getRequest()->getParam('order_id');
+             $order = $this->_objectManager->create('Magento\Sales\Model\Order')->load($orderId);
+            
+             $items=$order->getAllItems();
+
+
+            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+            $this->authSession = $objectManager->create('\Magento\Backend\Model\Auth\Session');
+            $product = $objectManager->create('\Magento\Catalog\Model\Product');
+              $email=$this->authSession->getUser()->getEmail();
+            $roleName = $this->authSession->getUser()->getRole()->getRoleName();
+            $productIds=array();
+           // $_items=$block->getItemsCollection();
+            $updateItems=array();
+            $filterItem= array();
+        foreach ($items as $_item){
+            
+                /* changes */
+            if($roleName=='Supplier'){ 
+               $sellerEmail=$product->load($_item->getProductId())->getAttributeText('seller_account');
+               if($email !== $sellerEmail){
+                    $updateItems[]=$_item->getItemId();
+                    $filterItem[$_item->getItemId()]=0;
+               } else {
+                 $filterItem[$_item->getItemId()] = (int)$_item->getQtyOrdered();
+               }
+
+           }
+        }
+
+//print_r($filterItem);
+//print_r($updateItems);
+     //   die;
+
+      try {  
+           // $orderId = $this->getRequest()->getParam('order_id');
             $invoiceData = $this->getRequest()->getParam('invoice', []);
+            $first=$this->getRequest()->getParam('first');
+            $invoiceCustome=array();
+              if(isset($first)){
+                $invoiceData['items']= $filterItem; 
+                $invoiceData['comment_text']='';
+              } else {
+
+                 foreach($updateItems as $upitem){
+                      $invoiceData['items'][$upitem]= 0;
+                   }
+              }
+
+
             $invoiceItems = isset($invoiceData['items']) ? $invoiceData['items'] : [];
             /** @var \Magento\Sales\Model\Order $order */
-            $order = $this->_objectManager->create('Magento\Sales\Model\Order')->load($orderId);
+       //  print_r($invoiceItems);
+      //   die;
+
+          //  $order = $this->_objectManager->create('Magento\Sales\Model\Order')->load($orderId);
+
+
             if (!$order->getId()) {
                 throw new \Magento\Framework\Exception\LocalizedException(__('The order no longer exists.'));
             }
@@ -104,7 +156,8 @@ class UpdateQty extends \Magento\Sales\Controller\Adminhtml\Invoice\AbstractInvo
             /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
             $resultPage = $this->resultPageFactory->create();
             $resultPage->getConfig()->getTitle()->prepend(__('Invoices'));
-            $response = $resultPage->getLayout()->getBlock('order_items')->toHtml();
+           
+           $response = $resultPage->getLayout()->getBlock('order_items1')->toHtml();
         } catch (LocalizedException $e) {
             $response = ['error' => true, 'message' => $e->getMessage()];
         } catch (\Exception $e) {

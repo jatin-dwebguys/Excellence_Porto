@@ -3,10 +3,10 @@
  * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Magento\Shipping\Block\Adminhtml;
+namespace Excellence\Seller\Block\Adminhtml\Order\Invoice;
 
 /**
- * Adminhtml shipment create
+ * Adminhtml invoice create
  */
 class Create extends \Magento\Backend\Block\Widget\Form\Container
 {
@@ -32,11 +32,14 @@ class Create extends \Magento\Backend\Block\Widget\Form\Container
     }
 
     /**
+     * Constructor
+     *
      * @return void
      */
     protected function _construct()
     {
         $this->_objectId = 'order_id';
+        $this->_controller = 'adminhtml_order_invoice';
         $this->_mode = 'create';
 
         parent::_construct();
@@ -46,32 +49,41 @@ class Create extends \Magento\Backend\Block\Widget\Form\Container
     }
 
     /**
-     * Retrieve shipment model instance
+     * Retrieve invoice model instance
      *
-     * @return \Magento\Sales\Model\Order\Shipment
+     * @return \Magento\Sales\Model\Order\Invoice
      */
-    public function getShipment()
+    public function getInvoice()
     {
-        return $this->_coreRegistry->registry('current_shipment');
+        return $this->_coreRegistry->registry('current_invoice');
     }
 
     /**
+     * Retrieve text for header
+     *
      * @return string
      */
     public function getHeaderText()
     {
-        $header = __('New Shipment for Order #%1', $this->getShipment()->getOrder()->getRealOrderId());
-        return $header;
+        return $this->getInvoice()->getOrder()->getForcedShipmentWithInvoice() ? __(
+            'New Invoice and Shipment for Order #%1',
+            $this->getInvoice()->getOrder()->getRealOrderId()
+        ) : __(
+            'New Invoice for Order #%1',
+            $this->getInvoice()->getOrder()->getRealOrderId()
+        );
     }
 
     /**
+     * Retrieve back url
+     *
      * @return string
      */
     public function getBackUrl()
     {
         return $this->getUrl(
-            'seller/gird/view',
-            ['order_id' => $this->getShipment() ? $this->getShipment()->getOrderId() : null]
+            'seller/order/view',
+            ['order_id' => $this->getInvoice() ? $this->getInvoice()->getOrderId() : null]
         );
     }
 }

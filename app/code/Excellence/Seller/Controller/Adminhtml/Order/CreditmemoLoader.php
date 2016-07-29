@@ -4,7 +4,7 @@
  * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Magento\Sales\Controller\Adminhtml\Order;
+namespace Excellence\Seller\Controller\Adminhtml\Order;
 
 use Magento\Framework\DataObject;
 use Magento\Sales\Api\CreditmemoRepositoryInterface;
@@ -203,10 +203,47 @@ class CreditmemoLoader extends DataObject
                     $backToStock[$orderItemId] = true;
                 }
             }
+/* changes for update auto */
+         
+          if($this->getFirst()){
 
-       
-             $data['qtys'] = $qtys;
-       
+            $items=$order->getAllItems();
+             $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+            $this->authSession = $objectManager->create('\Magento\Backend\Model\Auth\Session');
+            $product = $objectManager->create('\Magento\Catalog\Model\Product');
+              $email=$this->authSession->getUser()->getEmail();
+            $roleName = $this->authSession->getUser()->getRole()->getRoleName();
+            $productIds=array();
+           // $_items=$block->getItemsCollection();
+          
+        foreach ($items as $_item){
+            
+                /* changes */
+            if($roleName=='Supplier'){ 
+               $sellerEmail=$product->load($_item->getProductId())->getAttributeText('seller_account');
+               if($email !== $sellerEmail){
+                   
+                     $data['items'][$_item->getItemId()]['qty']=(int)$_item->getQtyOrdered();
+                     $data['qtys'][$_item->getItemId()] = (int)$_item->getQtyOrdered();
+                   
+               } 
+
+           }
+        }
+
+          } else {
+            $data['qtys'] = $qtys;
+        }
+/* end changes for update auto */
+       //  echo '<pre>';
+       //  print_r($order->getData());
+        //     $data=array();
+        //     $data['items'][67]['qty']=1;
+        //      $data['qtys'][67]=1;
+           //  $data['qtys'] = $qtys;
+         //  echo '<pre>';
+       //    print_r($data);
+       //    die;
             if ($invoice) {
                 $creditmemo = $this->creditmemoFactory->createByInvoice($invoice, $data);
             } else {

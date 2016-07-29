@@ -16,6 +16,14 @@
                          </resource>
                           <resource id="Excellence_Seller::seller_creditmemo" title="CreditMemo" sortOrder="20">
                          </resource>
+                         <resource id="Excellence_Seller::actions_view" title="OrderView" sortOrder="20">
+                         </resource>
+                         <resource id="Excellence_Seller::sales_invoice" title="InvoiceView" sortOrder="20"></resource>
+                         <!-- <resource id="Excellence_Seller::creditmemo" title="CreditmemoView" sortOrder="20">  -->
+                          <resource id="Excellence_Seller::sales_creditmemo" title="CreditmemoView" sortOrder="20">   
+                         </resource>
+                          <resource id="Excellence_Seller::shipment" title="ShipmentView" sortOrder="20">   
+                         </resource>
                  <!--    </resource> -->
                 </resource>     
  <!--AddMenuAcl-->

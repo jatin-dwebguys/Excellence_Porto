@@ -3,7 +3,7 @@
  * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Magento\Shipping\Block\Adminhtml;
+namespace Excellence\Seller\Block\Adminhtml;
 
 /**
  * Adminhtml shipment create
@@ -70,7 +70,7 @@ class Create extends \Magento\Backend\Block\Widget\Form\Container
     public function getBackUrl()
     {
         return $this->getUrl(
-            'seller/gird/view',
+            'seller/order/view',
             ['order_id' => $this->getShipment() ? $this->getShipment()->getOrderId() : null]
         );
     }

@@ -4,7 +4,7 @@
  * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Magento\Sales\Controller\Adminhtml\Order\Invoice;
+namespace Excellence\Seller\Controller\Adminhtml\Order\Invoice;
 
 use Magento\Backend\App\Action;
 use Magento\Framework\Exception\LocalizedException;
@@ -74,7 +74,7 @@ class Save extends \Magento\Backend\App\Action
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Magento_Sales::sales_invoice');
+        return $this->_authorization->isAllowed('Excellence_Seller::sales_invoice');
     }
 
     /**
@@ -111,7 +111,9 @@ class Save extends \Magento\Backend\App\Action
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function execute()
-    { 
+    {   
+
+
         /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
 
@@ -119,21 +121,70 @@ class Save extends \Magento\Backend\App\Action
         $isPost = $this->getRequest()->isPost();
         if (!$formKeyIsValid || !$isPost) {
             $this->messageManager->addError(__('We can\'t save the invoice right now.'));
-            return $resultRedirect->setPath('sales/order/index');
+            return $resultRedirect->setPath('seller/order/index');
         }
 
         $data = $this->getRequest()->getPost('invoice');
         $orderId = $this->getRequest()->getParam('order_id');
+        $order = $this->_objectManager->create('Magento\Sales\Model\Order')->load($orderId);
+      /* custome code for submit invoice  */
+       
 
+             $items=$order->getAllItems();
+
+
+            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+            $this->authSession = $objectManager->create('\Magento\Backend\Model\Auth\Session');
+            $product = $objectManager->create('\Magento\Catalog\Model\Product');
+              $email=$this->authSession->getUser()->getEmail();
+            $roleName = $this->authSession->getUser()->getRole()->getRoleName();
+            $productIds=array();
+           // $_items=$block->getItemsCollection();
+            $updateItems=array();
+            $filterItem= array();
+        foreach ($items as $_item){
+            
+                /* changes */
+            if($roleName=='Supplier'){ 
+               $sellerEmail=$product->load($_item->getProductId())->getAttributeText('seller_account');
+               if($email !== $sellerEmail){
+                    $updateItems[]=$_item->getItemId();
+                    $filterItem[$_item->getItemId()]=0;
+               } else {
+                 $filterItem[$_item->getItemId()] = (int)$_item->getQtyOrdered();
+               }
+
+           }
+        }           
+  
+
+
+//print_r($updateItems);
+//      die;
+      /* end custome code for submit invoice  */
+
+       
+ 
         if (!empty($data['comment_text'])) {
             $this->_objectManager->get('Magento\Backend\Model\Session')->setCommentText($data['comment_text']);
         }
 
         try {
             $invoiceData = $this->getRequest()->getParam('invoice', []);
+          //changes 
+             foreach($updateItems as $upitem){
+                      $invoiceData['items'][$upitem]= 0;
+                   }
+
+
             $invoiceItems = isset($invoiceData['items']) ? $invoiceData['items'] : [];
+        //  print_r($invoiceItems);
+
+
+
+          //  echo 'hi1'; die;
             /** @var \Magento\Sales\Model\Order $order */
-            $order = $this->_objectManager->create('Magento\Sales\Model\Order')->load($orderId);
+         //   $order = $this->_objectManager->create('Magento\Sales\Model\Order')->load($orderId);
             if (!$order->getId()) {
                 throw new \Magento\Framework\Exception\LocalizedException(__('The order no longer exists.'));
             }
@@ -204,7 +255,7 @@ class Save extends \Magento\Backend\App\Action
             } else {
                 $this->messageManager->addSuccess(__('The invoice has been created.'));
             }
-
+       
             // send invoice/shipment emails
             try {
                 if (!empty($data['send_email'])) {
@@ -225,13 +276,13 @@ class Save extends \Magento\Backend\App\Action
                 }
             }
             $this->_objectManager->get('Magento\Backend\Model\Session')->getCommentText(true);
-            return $resultRedirect->setPath('sales/order/view', ['order_id' => $orderId]);
+            return $resultRedirect->setPath('seller/grid/view', ['order_id' => $orderId]);
         } catch (LocalizedException $e) {
             $this->messageManager->addError($e->getMessage());
         } catch (\Exception $e) {
             $this->messageManager->addError(__('We can\'t save the invoice right now.'));
             $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
         }
-        return $resultRedirect->setPath('sales/*/new', ['order_id' => $orderId]);
+        return $resultRedirect->setPath('seller/*/new', ['order_id' => $orderId]);
     }
 }
