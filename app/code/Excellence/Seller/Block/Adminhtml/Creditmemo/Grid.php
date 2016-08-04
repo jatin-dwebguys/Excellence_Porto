@@ -134,7 +134,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
                 $orderIds[]=$sel->getOrderId();
                 }
              
-              $collection = $this->invoiceCollection->addFieldToFilter('order_id',array('in'=> $orderIds));
+              $collection = $this->invoiceCollection->addFieldToFilter('order_id',array('in'=> $orderIds))
+               ->addAttributeToSort('entity_id', 'DESC');
             
              } else { 
             //   $sellerOrderIds=$sellerOrder->getCollection();
@@ -144,7 +145,7 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
             //    }
              
           //   $collection = $this->invoiceCollection->addFieldToFilter('order_id',array('in'=> $orderIds));
-              $collection = $this->invoiceCollection;
+              $collection = $this->invoiceCollection->addAttributeToSort('entity_id', 'DESC');
              }
 
           	$this->setCollection($collection);
@@ -317,8 +318,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
     public function getRowUrl($row)
     {
         return $this->getUrl(
-            'seller/*/edit',
-            ['store' => $this->getRequest()->getParam('store'), 'id' => $row->getId()]
+            'seller/*/view',
+            ['store' => $this->getRequest()->getParam('store'), 'creditmemo_id' => $row->getId()]
         );
     }
 }

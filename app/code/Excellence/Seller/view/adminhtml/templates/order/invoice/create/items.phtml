@@ -11,7 +11,7 @@
   $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
  $this->authSession = $objectManager->create('\Magento\Backend\Model\Auth\Session');
  $product = $objectManager->create('\Magento\Catalog\Model\Product');
- $_items=$block->getItemsCollection();
+ //$_items=$block->getItemsCollection();
 
   $email=$this->authSession->getUser()->getEmail();
   $roleName = $this->authSession->getUser()->getRole()->getRoleName();
@@ -47,7 +47,7 @@
                     </tr>
                 </tfoot>
                 <?php endif; ?>
-                <?php $_items = $block->getInvoice()->getAllItems() ?>
+                <?php $_items = $block->getInvoice()->getAllItems(); ?>
                 <?php $_i = 0; foreach ($_items as $_item):
 
                 /* changes */
@@ -224,15 +224,14 @@ function bindSendEmail()
 window.bindSendEmail = bindSendEmail;
 window.checkButtonsRelation = checkButtonsRelation;
 //]]>
-// jQuery( document ).ready(function(){
-  
-// });
+if( '<?php echo $roleName; ?>'=='Supplier'){ 
 jQuery( window ).load(function() {
    jQuery.ajax({
             type: 'GET',
             data: { first: "1" },
             url: '<?php echo $updateFirstTime; ?>',
             success: function (data) {
+
                  jQuery('#invoice_item_container').find(".admin__page-section:nth-child(2)").empty();
                   var response=jQuery(data);
 
@@ -240,11 +239,13 @@ jQuery( window ).load(function() {
     var oneval = response.filter('.admin__page-section:nth-child(2)').html();
                // jQuery('#invoice_item_container').find().empty();
                 jQuery('#invoice_item_container').find(".admin__page-section:nth-child(2)").append(oneval);
-               // jQuery('#invoice_item_container').append(data);
+               jQuery('#invoice_item_container').append(data);
             }
          });
 
   });
+}
+
 });
  
 </script>

@@ -256,7 +256,7 @@ class Items extends \Magento\Sales\Block\Adminhtml\Items\AbstractItems
         return $this->_salesData->canSendNewInvoiceEmail($this->getOrder()->getStore()->getId());
     }
 
-     // public function getUpdateUrlFirst() {
-     //         return $setupurl = $this->_urlBuilder->getUrl("seller/order_invoice/updateQty/order_id/".$this->getInvoice()->getOrderId());
-     //    }
+     public function getUpdateUrlFirst() {
+             return $setupurl = $this->_urlBuilder->getUrl("seller/order_invoice/updateQty/order_id/".$this->getInvoice()->getOrderId());
+        }
 }

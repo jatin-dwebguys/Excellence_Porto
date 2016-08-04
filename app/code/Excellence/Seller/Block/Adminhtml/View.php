@@ -3,8 +3,8 @@
  * Copyright © 2016 Magento. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Magento\Shipping\Block\Adminhtml;
-// echo '1shipping';
+namespace Excellence\Seller\Block\Adminhtml;
+// echo 'hiseller';
 // die;
 /**
  * Adminhtml shipment create

@@ -125,7 +125,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
                foreach($sellerOrderIds as $sel){
                 $incrementIds[]=$sel->getIncrementId();
                 }
-               $collection = $this->orderCollection->addAttributeToFilter('increment_id',array('in'=> $incrementIds));
+               $collection = $this->orderCollection->addAttributeToFilter('increment_id',array('in'=> $incrementIds))
+               ->addAttributeToSort('entity_id', 'DESC');
              } else {
                    $sellerOrderIds=$sellerOrder->getCollection();
              
@@ -133,12 +134,12 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
                   foreach($sellerOrderIds as $sel){
                 $incrementIds[]=$sel->getIncrementId();
                 }
-                  $collection = $this->orderCollection->addAttributeToFilter('increment_id',array('in'=> $incrementIds));
+                  $collection = $this->orderCollection->addAttributeToFilter('increment_id',array('in'=> $incrementIds))
+                   ->addAttributeToSort('entity_id', 'DESC');
              }
 
             
-         
-       
+        
 
          
 			$this->setCollection($collection);
@@ -234,7 +235,7 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
                 'header' => __('Items SKU'),
                 'index' => 'entity_id',
                  'renderer' => 'Excellence\Seller\Block\Adminhtml\Grid\Sku',
-               // 'filter' => true,
+                'filter' => false,
                 'class' => 'entity_id'
             ]
         );

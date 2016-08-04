@@ -65,7 +65,11 @@ class UpdateQty extends \Magento\Sales\Controller\Adminhtml\Invoice\AbstractInvo
         $this->invoiceService = $invoiceService;
         parent::__construct($context, $registry, $resultForwardFactory);
     }
-
+   
+     protected function _isAllowed()
+    {
+        return $this->_authorization->isAllowed('Excellence_Seller::sales_invoice');
+    }
     /**
      * Update items qty action
      *
@@ -103,7 +107,7 @@ class UpdateQty extends \Magento\Sales\Controller\Adminhtml\Invoice\AbstractInvo
            }
         }
 
-//print_r($filterItem);
+
 //print_r($updateItems);
      //   die;
 
@@ -112,21 +116,22 @@ class UpdateQty extends \Magento\Sales\Controller\Adminhtml\Invoice\AbstractInvo
             $invoiceData = $this->getRequest()->getParam('invoice', []);
             $first=$this->getRequest()->getParam('first');
             $invoiceCustome=array();
+             if($roleName=='Supplier'){ 
               if(isset($first)){
                 $invoiceData['items']= $filterItem; 
                 $invoiceData['comment_text']='';
               } else {
-
+              
                  foreach($updateItems as $upitem){
                       $invoiceData['items'][$upitem]= 0;
                    }
               }
-
+             }
 
             $invoiceItems = isset($invoiceData['items']) ? $invoiceData['items'] : [];
             /** @var \Magento\Sales\Model\Order $order */
-       //  print_r($invoiceItems);
-      //   die;
+              //print_r($invoiceItems);
+             //   die;
 
           //  $order = $this->_objectManager->create('Magento\Sales\Model\Order')->load($orderId);
 
@@ -157,7 +162,7 @@ class UpdateQty extends \Magento\Sales\Controller\Adminhtml\Invoice\AbstractInvo
             $resultPage = $this->resultPageFactory->create();
             $resultPage->getConfig()->getTitle()->prepend(__('Invoices'));
            
-           $response = $resultPage->getLayout()->getBlock('order_items1')->toHtml();
+           $response = $resultPage->getLayout()->getBlock('order_items')->toHtml();
         } catch (LocalizedException $e) {
             $response = ['error' => true, 'message' => $e->getMessage()];
         } catch (\Exception $e) {

@@ -13,21 +13,23 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
         $this->_controller = 'adminhtml_seller';
 
         parent::_construct();
+            $this->removeButton('delete');
+            $this->removeButton('reset');
+             $this->removeButton('save');
+       // $this->buttonList->update('save', 'label', __('Save Block'));
+       // $this->buttonList->update('delete', 'label', __('Delete Block'));
 
-        $this->buttonList->update('save', 'label', __('Save Block'));
-        $this->buttonList->update('delete', 'label', __('Delete Block'));
-
-        $this->buttonList->add(
-            'saveandcontinue',
-            array(
-                'label' => __('Save and Continue Edit'),
-                'class' => 'save',
-                'data_attribute' => array(
-                    'mage-init' => array('button' => array('event' => 'saveAndContinueEdit', 'target' => '#edit_form'))
-                )
-            ),
-            -100
-        );
+        // $this->buttonList->add(
+        //     'saveandcontinue',
+        //     array(
+        //         'label' => __('Save and Continue Edit'),
+        //         'class' => 'save',
+        //         'data_attribute' => array(
+        //             'mage-init' => array('button' => array('event' => 'saveAndContinueEdit', 'target' => '#edit_form'))
+        //         )
+        //     ),
+        //     -100
+        // );
 
         $this->_formScripts[] = "
             function toggleEditor() {

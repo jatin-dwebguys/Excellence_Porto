@@ -215,14 +215,15 @@ class CreditmemoLoader extends DataObject
             $roleName = $this->authSession->getUser()->getRole()->getRoleName();
             $productIds=array();
            // $_items=$block->getItemsCollection();
-          
+        
         foreach ($items as $_item){
-            
+         
                 /* changes */
-            if($roleName=='Supplier'){ 
+            if($roleName=='Supplier'){   
                $sellerEmail=$product->load($_item->getProductId())->getAttributeText('seller_account');
-               if($email !== $sellerEmail){
-                   
+           
+               if($email == $sellerEmail){
+                 
                      $data['items'][$_item->getItemId()]['qty']=(int)$_item->getQtyOrdered();
                      $data['qtys'][$_item->getItemId()] = (int)$_item->getQtyOrdered();
                    
@@ -234,6 +235,7 @@ class CreditmemoLoader extends DataObject
           } else {
             $data['qtys'] = $qtys;
         }
+
 /* end changes for update auto */
        //  echo '<pre>';
        //  print_r($order->getData());

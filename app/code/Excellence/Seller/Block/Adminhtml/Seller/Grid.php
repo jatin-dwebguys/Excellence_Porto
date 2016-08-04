@@ -60,14 +60,16 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
         \Magento\Store\Model\WebsiteFactory $websiteFactory,
 		\Excellence\Seller\Model\ResourceModel\Seller\Collection $collectionFactory,
         \Magento\Framework\Module\Manager $moduleManager,
-         \Magento\Backend\Model\Auth\Session $authSession, 
+        \Magento\Backend\Model\Auth\Session $authSession,
+        \Excellence\Seller\Model\OrderFactory $sellerorderFactory, 
         array $data = []
     ) {
 		
 		$this->_collectionFactory = $collectionFactory;
         $this->_websiteFactory = $websiteFactory;
         $this->moduleManager = $moduleManager;
-          $this->authSession = $authSession;
+        $this->authSession = $authSession;
+        $this->sellerorderFactory = $sellerorderFactory;  
         parent::__construct($context, $backendHelper, $data);
     }
 
@@ -101,14 +103,22 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
     protected function _prepareCollection()
     {
 		try{
+
+             $email=$this->authSession->getUser()->getEmail();
+              $roleName = $this->authSession->getUser()->getRole()->getRoleName();
+              $sellerOrder=$this->sellerorderFactory->create(); 
+        
+
+             if($roleName=='Supplier'){
 			
-			 $email=$this->authSession->getUser()->getEmail();
+			
              $collection=$this->_collectionFactory->addFieldToFilter('email',$email);
+         } else {
+            $collection=$this->_collectionFactory;
+         }   
 			// $collection =$this->_collectionFactory->load();
 
-		  
-
-			$this->setCollection($collection);
+		    $this->setCollection($collection);
 
 			parent::_prepareCollection();
 		  

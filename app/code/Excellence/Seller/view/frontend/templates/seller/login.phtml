@@ -1,4 +1,26 @@
+ <?php $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+  $sessionObject=$objectManager->create('\Magento\Catalog\Model\Session'); 
+     $successMessage=$sessionObject->getSuccessRegistor();
+   $errorMessage=$sessionObject->getErrorSession();
 
+   ?>
+<div class="page messages" style="display:<?php echo $successMessage?'block':'none'; ?>">
+    <div class="messages">
+        <div class="message-success success message">
+            <div data-bind="html: message.text">You are Successfully Registored, you can check your email or password on your email address.</div>
+        </div>
+    </div>
+</div>
+
+<div class="page messages" style="display:<?php echo $errorMessage?'block':'none'; ?>">
+    <div class="messages">
+        <div class="message-error error message">
+            <div data-bind="html: message.text">This email id already registered.. </div>
+        </div>
+    </div>
+</div>
+<?php   $sessionObject->unsSuccessRegistor(); ?>
+<?php   $sessionObject->unsErrorSession(); ?>
 
 <form class="form create account form-create-account" action="<?php /* @escapeNotVerified */ echo $block->getPostActionUrl() ?>" method="post" id="form-validate" enctype="multipart/form-data" autocomplete="off">
     <fieldset class="fieldset create info">
@@ -47,22 +69,16 @@
          
     </fieldset>
     
-   <fieldset class="fieldset create account" data-hasrequired="<?php /* @escapeNotVerified */ echo __('* Required Fields') ?>">
+   <fieldset class="fieldset " data-hasrequired="<?php /* @escapeNotVerified */ echo __('* Required Fields') ?>">
         <legend class="legend"><span><?php /* @escapeNotVerified */ echo __('Sign-in Information') ?></span></legend><br>
 
-        <div class="field password required">
-            <label for="password" class="label"><span><?php /* @escapeNotVerified */ echo __('Password') ?></span></label>
+        <div class="field  required">
+            <label for="passwordnew" class="label"><span><?php /* @escapeNotVerified */ echo __('Password') ?></span></label>
             <div class="control">
-                <input type="password" name="password" id="password" title="<?php /* @escapeNotVerified */ echo __('Password') ?>" class="input-text" data-validate="{required:true, 'validate-password':true}">
+                <input type="password" name="passwordnew" id="password1" title="<?php /* @escapeNotVerified */ echo __('Passwordnew') ?>" class="input-text " data-validate="{required:true, 'validate-admin-password':true }">
             </div>
         </div>
-        <!-- <div class="field confirmation required">
-            <label for="password-confirmation" class="label"><span><?php /* @escapeNotVerified */ echo __('Confirm Password') ?></span></label>
-            <div class="control">
-                <input type="password" name="password_confirmation" title="<?php /* @escapeNotVerified */ echo __('Confirm Password') ?>" id="password-confirmation" class="input-text" data-validate="{required:true, equalTo:'#password'}">
-            </div>
-        </div> -->
-         
+       
        
     </fieldset>
     <div class="actions-toolbar">
@@ -83,16 +99,39 @@
 <script type="text/javascript">
 require([
     'jquery',
-    'mage/mage'
+    'mage/mage',
+    'jquery/ui', // Jquery UI Library
+'jquery/validate', // Jquery Validation Library
+'mage/translate' // Magento text translate (Validation message translte as per language)
 ], function($){
  
+   
+
    var dataForm = $('#form-validate');
   //  var dataForm = $('#social-form-create');
                     var ignore = null;
 
                     dataForm.mage('validation', {
+
+                       
                                                 ignore: ignore ? ':hidden:not(' + ignore + ')' : ':hidden'
                                             }).find('input:text').attr('autocomplete', 'off');
 
+    
+
+ // $.validator.addMethod(
+ //        'validate-custom-pass', function (value) { 
+
+ //     if (/\d/.test(value) && /[a-zA-Z]/.test(value) && value.length > 6) {
+ //      console.log('kdsjfk');
+ //         return true;  
+ //     } else {
+ //         return false;
+ //     }
+           
+ //      }, $.mage.__('Password length should be minimum 8 and Your password must include both numeric and alphabetic'));
+                 
+
 });
+
 </script>

@@ -13,8 +13,7 @@ class Shipping extends \Magento\Backend\Block\Widget\Grid\Container
         $this->_controller = 'adminhtml_shipping';/*block grid.php directory*/
         $this->_blockGroup = 'Excellence_Seller';
         $this->_headerText = __('Grid');
-       
         parent::_construct();
-		
+		$this->removeButton('add');
     }
 }

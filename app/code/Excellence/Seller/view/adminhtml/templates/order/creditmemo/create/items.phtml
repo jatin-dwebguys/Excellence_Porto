@@ -238,6 +238,7 @@ function bindSendEmail()
 window.bindSendEmail = bindSendEmail;
 window.checkButtonsRelation = checkButtonsRelation;
 //]]>
+ if( '<?php echo $roleName; ?>'=='Supplier'){ 
    jQuery( window ).load(function() {
    jQuery.ajax({
             type: 'GET',
@@ -256,7 +257,7 @@ window.checkButtonsRelation = checkButtonsRelation;
          });
 
   });
-
+ }
 
 });
 </script>

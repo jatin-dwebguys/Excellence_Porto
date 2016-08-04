@@ -117,6 +117,7 @@ class Manager implements ManagerInterface
             $this->eventManager->dispatch('session_abstract_clear_messages');
             return $messages;
         }
+        
         return $this->session->getData($group);
     }
 
@@ -160,7 +161,7 @@ class Manager implements ManagerInterface
      * @return $this
      */
     public function addError($message, $group = null)
-    {
+    {  
         $this->addMessage($this->messageFactory->create(MessageInterface::TYPE_ERROR, $message), $group);
         return $this;
     }

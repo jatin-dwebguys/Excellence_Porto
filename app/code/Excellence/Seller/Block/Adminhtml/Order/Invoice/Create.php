@@ -82,7 +82,7 @@ class Create extends \Magento\Backend\Block\Widget\Form\Container
     public function getBackUrl()
     {
         return $this->getUrl(
-            'seller/order/view',
+            'seller/grid/view',
             ['order_id' => $this->getInvoice() ? $this->getInvoice()->getOrderId() : null]
         );
     }

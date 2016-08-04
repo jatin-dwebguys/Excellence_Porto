@@ -130,15 +130,21 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
         
 
              if($roleName=='Supplier'){
-             
+
                  $sellerOrderIds=$sellerOrder->getCollection()->addFieldToFilter('seller_value',$email);
-             
+           
                $orderIds= array();
                foreach($sellerOrderIds as $sel){
                 $orderIds[]=$sel->getOrderId();
                 }
-             
-              $collection = $this->invoiceCollection->addFieldToFilter('order_id',$orderIds);
+                     if(count($orderIds) > 0) {
+                           $collection = $this->invoiceCollection->addFieldToFilter('order_id',$orderIds)
+                       ->addAttributeToSort('entity_id', 'DESC');
+                     } else {
+
+                           $collection=$this->invoiceCollection->addFieldToFilter('order_id','0')
+                       ->addAttributeToSort('entity_id', 'DESC');
+                              }
             
              } else {
                 //    $sellerOrderIds=$sellerOrder->getCollection();
@@ -148,7 +154,7 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
                 // $incrementIds[]=$sel->getOrderId();
                 // }
                 //   $collection = $this->invoiceCollection->addAttributeToFilter('increment_id',array('in'=> $incrementIds));
-               $collection = $this->invoiceCollection;
+               $collection = $this->invoiceCollection->addAttributeToSort('entity_id', 'DESC');
 
              }
 
@@ -329,8 +335,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
     public function getRowUrl($row)
     {
         return $this->getUrl(
-            'seller/*/edit',
-            ['store' => $this->getRequest()->getParam('store'), 'id' => $row->getId()]
+            'seller/*/view',
+            ['store' => $this->getRequest()->getParam('store'), 'invoice_id' => $row->getId()]
         );
     }
 }
